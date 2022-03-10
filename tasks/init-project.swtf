@@ -1,7 +1,7 @@
 - Init git repo [done]
 - Init npm project with needed dependecies:
-  - rollupjs [ready]
-  - prettier [ready]
-  - typescript [ready]
+  - rollupjs [done]
+  - prettier [done]
+  - typescript [done]
 - Create folder structure [ready]
 - Migrate existing code from lsf-boost(develop) [ready]
