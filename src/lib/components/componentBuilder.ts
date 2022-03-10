@@ -47,17 +47,25 @@ export class ComponentBuilder {
     return isDoc ? (await fs.readFile(docPath)).toString() : null;
   }
 
+  private async buildAllComponentParts(
+    componentDir: string,
+  ): Promise<{ html: string; css: string; js: string; doc: string }> {
+    return {
+      html: await this.buildComponentHtml(componentDir),
+      css: await this.buildComponentCss(componentDir),
+      js: await this.buildComponentJs(componentDir),
+      doc: await this.buildComponentDoc(componentDir),
+    };
+  }
+
   public async buildComponent(
     componentName: string,
     componentDir: string,
   ): Promise<Component> {
-    const html = await this.buildComponentHtml(componentDir);
-    const css = await this.buildComponentCss(componentDir);
-    const js = await this.buildComponentJs(componentDir);
-    const doc = await this.buildComponentDoc(componentDir);
-
+    const { html, css, js, doc } = await this.buildAllComponentParts(
+      componentDir,
+    );
     const isComponent = html || css || js;
-
     if (!isComponent) return null;
 
     return {

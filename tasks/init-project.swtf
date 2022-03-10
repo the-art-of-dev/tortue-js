@@ -4,5 +4,10 @@
   - prettier [done]
   - typescript [done]
   - add npm scripts [done]
-- Create folder structure [ready]
-- Migrate existing code from lsf-boost(develop) [ready]
+- Create folder structure [done]
+- Migrate existing ts code from lsf-boost(develop) [done]
+- Implement page rendering [ready]
+- Implement assets handling [ready]
+- Implement plugin support in component and page building process [ready]
+- Implement CSS minify plugin
+- Migrate cli [ready]
