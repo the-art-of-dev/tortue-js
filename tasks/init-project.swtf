@@ -3,5 +3,6 @@
   - rollupjs [done]
   - prettier [done]
   - typescript [done]
+  - add npm scripts [ready]
 - Create folder structure [ready]
 - Migrate existing code from lsf-boost(develop) [ready]

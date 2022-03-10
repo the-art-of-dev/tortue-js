@@ -4,7 +4,10 @@
   "description": "Static website development framework",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "rollup -c rollup.config.js",
+    "test": "jest --collect-coverage",
+    "lint": "prettier --write \"src/**/*.ts\"",
+    "lint:check": "prettier --check \"src/**/*.ts\" \"tests/**/*.ts\""
   },
   "author": "Vukoman Stojanovic",
   "license": "MIT",
