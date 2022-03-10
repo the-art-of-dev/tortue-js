@@ -1,0 +1,90 @@
+import path from "path";
+import { Context } from "../contexts";
+import fsSync from "fs";
+import fs from "fs/promises";
+import { Component } from "./";
+import { ComponentRegistry, MapComponentRegistry } from "./";
+import { ContextTreeBuilder } from "../contexts";
+
+export class ComponentBuilder {
+  private componentsRoot: string;
+
+  constructor(componentsRoot: string) {
+    this.componentsRoot = componentsRoot;
+  }
+
+  public async getComponentsContexts(): Promise<Context[]> {
+    const treeBuilder = new ContextTreeBuilder(this.componentsRoot);
+    const tree = await treeBuilder.build();
+
+    const componentContexts: Context[] = tree
+      .findLeafNodes()
+      .map((n) => n.data);
+
+    return componentContexts;
+  }
+
+  private async buildComponentHtml(componentDir: string): Promise<string> {
+    const htmlPath = path.resolve(componentDir, "index.html");
+    const isHtml = fsSync.existsSync(htmlPath);
+    return isHtml ? (await fs.readFile(htmlPath)).toString() : null;
+  }
+  private async buildComponentCss(componentDir: string): Promise<string> {
+    const cssPath = path.resolve(componentDir, "style.css");
+    const isCss = fsSync.existsSync(cssPath);
+    return isCss ? (await fs.readFile(cssPath)).toString() : null;
+  }
+
+  private async buildComponentJs(componentDir: string): Promise<string> {
+    const jsPath = path.resolve(componentDir, "script.js");
+    const isJs = fsSync.existsSync(jsPath);
+    return isJs ? (await fs.readFile(jsPath)).toString() : null;
+  }
+
+  private async buildComponentDoc(componentDir: string): Promise<string> {
+    const docPath = path.resolve(componentDir, "doc.md");
+    const isDoc = fsSync.existsSync(docPath);
+    return isDoc ? (await fs.readFile(docPath)).toString() : null;
+  }
+
+  public async buildComponent(
+    componentName: string,
+    componentDir: string,
+  ): Promise<Component> {
+    const html = await this.buildComponentHtml(componentDir);
+    const css = await this.buildComponentCss(componentDir);
+    const js = await this.buildComponentJs(componentDir);
+    const doc = await this.buildComponentDoc(componentDir);
+
+    const isComponent = html || css || js;
+
+    if (!isComponent) return null;
+
+    return {
+      name: componentName,
+      html,
+      css,
+      js,
+      doc,
+      dependecies: [],
+    };
+  }
+
+  public async buildAllComponents(): Promise<ComponentRegistry> {
+    const componentContexts = await this.getComponentsContexts();
+    const components: Component[] = [];
+
+    for (const context of componentContexts) {
+      const component = await this.buildComponent(context.name, context.path);
+      if (component) components.push(component);
+    }
+
+    const registry = new MapComponentRegistry(components);
+    // for (const comp of components) {
+    //   const rndr = new ComponentRendererJSDOM(comp.name, registry);
+    //   comp.dependecies = rndr.findDependecies();
+    // }
+
+    return registry;
+  }
+}
