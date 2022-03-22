@@ -12,7 +12,7 @@ const dirContextFilter = (c: Context) =>
 
 const mapDirToContext = (parent: Context, d: string) => {
   return {
-    name: `${parent.name}-${d}`,
+    name: parent.name ? `${parent.name}-${d}` : d,
     path: path.resolve(parent.path, d),
   } as Context;
 };
@@ -40,7 +40,7 @@ export class ContextTreeBuilder {
 
       const children = await this.scanForChildDirContexts(current);
       if (children) {
-        stack.push(...children);
+        stack.push(...children.slice().reverse());
       }
     }
     return tree;
