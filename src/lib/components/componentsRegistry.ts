@@ -42,6 +42,6 @@ export class MapComponentRegistry implements ComponentRegistry {
   }
 
   toJSON() {
-    return JSON.stringify(this.componentsMap.values);
+    return this.getAllComponents();
   }
 }
