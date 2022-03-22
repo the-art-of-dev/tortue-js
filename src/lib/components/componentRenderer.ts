@@ -56,6 +56,7 @@ export class ComponentRendererJSDOM implements ComponentRenderer {
 
   public render(): HTMLElement {
     const comp = this.registry.getComponent(this.compName);
+    if (!comp) return null;
     const dom = JSDOM.fragment(comp.html);
     return dom.firstChild as HTMLElement;
   }

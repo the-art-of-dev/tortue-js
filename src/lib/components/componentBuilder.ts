@@ -58,18 +58,15 @@ export class ComponentBuilder {
     };
   }
 
-  public async buildComponent(
-    componentName: string,
-    componentDir: string,
-  ): Promise<Component> {
+  public async buildComponent(compContext: Context): Promise<Component> {
     const { html, css, js, doc } = await this.buildAllComponentParts(
-      componentDir,
+      compContext.path,
     );
     const isComponent = html || css || js;
     if (!isComponent) return null;
 
     return {
-      name: componentName,
+      name: compContext.name,
       html,
       css,
       js,
@@ -83,7 +80,7 @@ export class ComponentBuilder {
     const components: Component[] = [];
 
     for (const context of componentContexts) {
-      const component = await this.buildComponent(context.name, context.path);
+      const component = await this.buildComponent(context);
       if (component) components.push(component);
     }
 

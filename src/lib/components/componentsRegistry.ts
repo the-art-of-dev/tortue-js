@@ -40,4 +40,8 @@ export class MapComponentRegistry implements ComponentRegistry {
     }
     return comp;
   }
+
+  toJSON() {
+    return JSON.stringify(this.componentsMap.values);
+  }
 }

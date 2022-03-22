@@ -14,7 +14,7 @@
     "declaration": true,
     "declarationDir": "./dist/types",
     "paths": {
-      "@lib": ["src/lib/index.ts"]
+      "@lib/*": ["src/lib/*"]
     }
   },
   "include": ["src/**/*", "tests/**/*"]

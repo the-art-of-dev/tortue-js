@@ -20,7 +20,7 @@ export class ContextTree implements Tree<Context> {
     const leafNodes: TreeNode<Context>[] = [];
 
     this.traverseSync(this.root, (n) => {
-      if (n.children) return;
+      if (n.children && n.children.length) return;
       leafNodes.push(n);
     });
 
@@ -29,6 +29,7 @@ export class ContextTree implements Tree<Context> {
 
   public find(id: string): TreeNode<Context> {
     let node = null;
+
     this.traverseSync(this.root, (n) => {
       if (n.id == id) node = n;
     });
@@ -45,7 +46,7 @@ export class ContextTree implements Tree<Context> {
   }
 
   private getParendId(id: string) {
-    return id.split("-").splice(-1).join("-");
+    return id.split("-").slice(0, -1).join("-");
   }
 
   public add(c: Context): TreeNode<Context> {
@@ -73,8 +74,8 @@ export class ContextTree implements Tree<Context> {
     while (stack.length) {
       const current = stack.pop();
 
-      if (current.children && visited.has(current.id)) {
-        stack.push(current, ...current.children);
+      if (current.children && !visited.has(current.id)) {
+        stack.push(current, ...current.children.slice().reverse());
         visited.set(current.id, true);
         continue;
       }
