@@ -1,7 +1,7 @@
 import { ComponentRegistry } from "../components";
-import { TortueShell } from "./plugin";
+import { TortueShell } from "./tortueShell";
 
-export class PluginQueue {
+export class TortueShellQueue {
   private queue: TortueShell[];
 
   /**

@@ -6,4 +6,6 @@ export interface RenderPageOptions {
   destPath: string;
 }
 
-export class PageRenderer {}
+export class PageRenderer {
+  public render() {}
+}

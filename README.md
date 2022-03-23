@@ -1,4 +1,3 @@
-# tortue-js
+# 🐢 tortue-js /tɔʁ.ty/
 
-_Static website development framework_
-
+_Static website development made easy_
