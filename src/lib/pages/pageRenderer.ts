@@ -1,6 +1,6 @@
 import { JSDOM } from "jsdom";
 import { Page } from ".";
-import { ComponentRegistry, ComponentRendererJSDOM } from "../components";
+import { ComponentRegistry } from "../components";
 
 export interface RenderPageOptions {
   destPath: string;
@@ -41,13 +41,13 @@ export class PageRenderer {
       const comp = this.registry.getComponent(compName);
       if (!comp) return;
 
-      const compRenderer = new ComponentRendererJSDOM(compName, this.registry);
-      const compDeps = compRenderer.findDependecies();
-      for (const dep of compDeps) {
-        if (deps.includes(dep)) continue;
-        deps.push(dep);
-      }
-      deps.push(compName);
+      // const compRenderer = new ComponentRendererJSDOM(compName, this.registry);
+      // const compDeps = compRenderer.findDependecies();
+      // for (const dep of compDeps) {
+      //   if (deps.includes(dep)) continue;
+      //   deps.push(dep);
+      // }
+      // deps.push(compName);
     });
 
     console.log(deps);

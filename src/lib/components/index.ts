@@ -1,4 +1,7 @@
 export { Component } from "./component";
 export { ComponentBuilder } from "./componentBuilder";
-export { ComponentRenderer, ComponentRendererJSDOM } from "./componentRenderer";
-export { ComponentRegistry, MapComponentRegistry } from "./componentsRegistry";
+export {
+  ComponentRegistryRenderer,
+  ComponentRegisterRendererJSDOM,
+} from "./componentRegistryRenderer";
+export { ComponentRegistry, MapComponentRegistry } from "./componentRegistry";
