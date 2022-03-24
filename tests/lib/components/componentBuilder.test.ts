@@ -1,5 +1,4 @@
 import { ComponentBuilder } from "@lib/components";
-import { Context } from "@lib/contexts";
 import path from "path";
 
 describe("Component Builder", () => {
@@ -11,6 +10,7 @@ describe("Component Builder", () => {
     const contexts = await builder.getComponentsContexts();
     expect(contexts.map((c) => c.name)).toEqual([
       "Common-Footer",
+      "Common-Global",
       "Common-Header",
       "Home-Section",
       "Home-Slider",
@@ -18,6 +18,7 @@ describe("Component Builder", () => {
 
     const registry = await builder.buildAllComponents();
     expect(registry.getAllComponents().map((c) => c.name)).toEqual([
+      "Common-Global",
       "Common-Header",
       "Home-Section",
       "Home-Slider",

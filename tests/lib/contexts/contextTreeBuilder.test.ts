@@ -6,6 +6,7 @@ describe("Context Tree Builder", () => {
     const tree = await builder.build();
     expect(tree.findLeafNodes().map((n) => n.id)).toEqual([
       "Common-Footer",
+      "Common-Global",
       "Common-Header",
       "Home-Section",
       "Home-Slider",
