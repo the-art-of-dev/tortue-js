@@ -34,11 +34,11 @@ export class ComponentRegisterRendererJSDOM
     callback: (el: HTMLElement) => void,
   ) {
     if (!el) return;
-    callback(el);
     for (let i = 0; i < el.children.length; i++) {
       const child = el.children[i];
       this._traverseElement(child as HTMLElement, callback);
     }
+    callback(el);
   }
 
   public findDependecies(htmlEl: HTMLElement): string[] {
