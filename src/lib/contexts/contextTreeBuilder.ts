@@ -1,6 +1,6 @@
 import path from "path";
-import { ContextTree } from ".";
-import { Context } from ".";
+import { ContextTree } from "./contextTree";
+import { Context } from "./context";
 import fsSync from "fs";
 import fs from "fs/promises";
 

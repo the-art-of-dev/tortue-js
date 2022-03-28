@@ -1,10 +1,10 @@
 import { JSDOM } from "jsdom";
-import { Page } from ".";
+import { Page } from "./page";
 import {
   ComponentRegisterRendererJSDOM,
   ComponentRegistry,
-  ComponentRegistryRenderer,
-} from "../components";
+} from "@lib/components";
+import Mustache from "mustache";
 
 export interface RenderPageOptions {
   destPath: string;
@@ -28,9 +28,26 @@ function renderElement(
 ) {
   const comp = registry.getComponent(el.nodeName);
   if (!comp) return;
-  const rendered = crr.render(el);
+  const componentEl = crr.render(el);
+
+  //attributtes
+  const renderProps = crr.extractProps<any>(el);
+  const defaultProps = crr.extractProps<any>(componentEl);
+
+  if (el.innerHTML) renderProps["innerContent"] = el.innerHTML;
+  for (const prop of Object.keys(defaultProps)) {
+    if (!renderProps[prop]) {
+      renderProps[prop] = defaultProps[prop];
+    }
+  }
+
+  const renderedHTML = Mustache.render(comp.html, renderProps);
+  const rendered = JSDOM.fragment(renderedHTML).firstChild;
+
   el.replaceWith(rendered);
-  traverseElement(rendered, (el) => renderElement(el, registry, depList, crr));
+  traverseElement(rendered as HTMLElement, (el) =>
+    renderElement(el, registry, depList, crr),
+  );
   depList.add(comp.name);
 }
 

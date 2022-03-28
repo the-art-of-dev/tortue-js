@@ -2,19 +2,10 @@ import { ComponentBuilder, ComponentRegistry } from "@lib/components";
 import { Layout } from "@lib/layouts/layout";
 import { Page, PageBuilder, renderPage } from "@lib/pages";
 import { buildTortueShells, TortueShell } from "@lib/tortueShells";
-import {
-  DEFAULT_TORTUE_CONFIG,
-  TortueConfig,
-  TortueShellConfig,
-} from "./tortueConfig";
+import { DEFAULT_TORTUE_CONFIG, TortueConfig } from "./tortueConfig";
 import fsSync from "fs";
 import fs from "fs/promises";
 import path from "path";
-import {
-  TortueShellAction,
-  TortueShellActionData,
-} from "@lib/tortueShells/tortueShell";
-import { TortuePipelineEvent } from "./events";
 import { LayoutBuilder } from "@lib/layouts/layoutBuilder";
 
 export class Tortue {
@@ -36,9 +27,9 @@ export class Tortue {
   private async _readConfig(configPath: string): Promise<TortueConfig> {
     configPath = path.resolve(configPath);
     if (!fsSync.existsSync(configPath)) return null;
-    const config = (
-      await fs.readFile(configPath)
-    ).toJSON() as unknown as TortueConfig;
+    const config = JSON.parse(
+      (await fs.readFile(configPath)).toString(),
+    ) as unknown as TortueConfig;
 
     return config;
   }

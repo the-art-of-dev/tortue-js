@@ -20,10 +20,14 @@ export class ComponentRegisterRendererJSDOM
 
   public extractProps<T>(htmlEl: HTMLElement): T {
     const props = {};
+    const propPrefixes = ["lb-props-", "tp-"];
 
     for (let i = 0; i < htmlEl.attributes.length; i++) {
       const attr = htmlEl.attributes.item(i);
-      props[attr.name] = attr.value;
+      const prefix = propPrefixes.find((p) => attr.name.startsWith(p));
+      if (!prefix) continue;
+
+      props[attr.name.replace(prefix, "")] = attr.value;
     }
 
     return props as T;

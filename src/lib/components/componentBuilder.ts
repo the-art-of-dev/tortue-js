@@ -1,10 +1,9 @@
 import path from "path";
-import { Context } from "../contexts";
+import { Context, ContextTreeBuilder } from "@lib/contexts";
 import fsSync from "fs";
 import fs from "fs/promises";
-import { Component } from "./";
-import { ComponentRegistry, MapComponentRegistry } from "./";
-import { ContextTreeBuilder } from "../contexts";
+import { Component } from "./component";
+import { ComponentRegistry, MapComponentRegistry } from "./componentRegistry";
 
 export class ComponentBuilder {
   private componentsRoot: string;
