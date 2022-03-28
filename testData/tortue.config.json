@@ -1,0 +1,6 @@
+{
+  "componentsDir": "./testData/components",
+  "layoutsDir": "./testData/layouts",
+  "pagesDir": "./testData/pages",
+  "shellsConfig": []
+}

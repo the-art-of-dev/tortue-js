@@ -14,7 +14,8 @@
     "declaration": true,
     "declarationDir": "./dist/types",
     "paths": {
-      "@lib/*": ["src/lib/*"]
+      "@lib/*": ["src/lib/*"],
+      "@stdShells/*": ["src/stdShells/*"]
     }
   },
   "include": ["src/**/*", "tests/**/*"]

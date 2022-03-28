@@ -1,5 +1,4 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "html.customData": ["componentsHTMLCustomData.json"]
+  "editor.formatOnSave": true
 }
