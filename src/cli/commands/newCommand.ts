@@ -156,10 +156,10 @@ dist-*
       "name": "intellisense-vsc"
     },
     {
-      "name": "export-html"
+      "name": "export-assets"
     },
     {
-      "name": "export-assets"
+      "name": "export-html"
     }
   ]
 }    
