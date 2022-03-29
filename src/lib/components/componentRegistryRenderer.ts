@@ -22,7 +22,7 @@ export class ComponentRegisterRendererJSDOM
     const props = {};
     const propPrefixes = ["lb-props-", "tp-"];
 
-    for (let i = 0; i < htmlEl.attributes.length; i++) {
+    for (let i = 0; i < htmlEl.attributes?.length; i++) {
       const attr = htmlEl.attributes.item(i);
       const prefix = propPrefixes.find((p) => attr.name.startsWith(p));
       if (!prefix) continue;
