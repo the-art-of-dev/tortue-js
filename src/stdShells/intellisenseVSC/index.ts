@@ -18,7 +18,7 @@ const intellisenseVSC: TortueShell = {
       }
 
       await fs.writeFile(
-        "componentsHTMLCustomData.json",
+        "components-html-custom-data.json",
         JSON.stringify(htmlCstomData),
       );
 
