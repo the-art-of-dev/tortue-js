@@ -18,5 +18,5 @@ export const DEFAULT_TORTUE_CONFIG: TortueConfig = {
   componentsDir: "components",
   pagesDir: "pages",
   layoutsDir: "layouts",
-  shellsConfig: [],
+  shellsConfig: null,
 };

@@ -15,6 +15,7 @@ export class Tortue {
   private _componentRegistry: ComponentRegistry;
   private _layouts: Layout[];
   private _pages: Page[];
+  private _replaceShells: boolean;
 
   /**
    *
@@ -22,6 +23,7 @@ export class Tortue {
   constructor(configPath: string) {
     this._configPath = configPath;
     this.shells = [];
+    this._replaceShells = false;
   }
 
   private async _readConfig(configPath: string): Promise<TortueConfig> {
@@ -42,6 +44,12 @@ export class Tortue {
 
     const newConfig = await this._readConfig(this._configPath);
     this.config = newConfig ?? DEFAULT_TORTUE_CONFIG;
+
+    if (this.config.shellsConfig) {
+      this._replaceShells = true;
+    } else {
+      this.config.shellsConfig = [];
+    }
   }
 
   public async loadShells(): Promise<void> {
@@ -78,6 +86,10 @@ export class Tortue {
 
   public get shells(): TortueShell[] {
     return this._shells;
+  }
+
+  public get replaceShells(): boolean {
+    return this._replaceShells;
   }
 
   public get configPath(): string {

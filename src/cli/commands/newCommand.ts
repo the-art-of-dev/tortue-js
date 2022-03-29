@@ -148,11 +148,21 @@ dist-*
 
   private async _createDefaultTortueConfig(repoPath: string) {
     const tortueConfigTemplate = `{
-  componentsDir: "components",
-  pagesDir: "pages",
-  layoutsDir: "layouts",
-  shellsConfig: [],
-}
+  "componentsDir": "components",
+  "layoutsDir": "layouts",
+  "pagesDir": "pages",
+  "shellsConfig": [
+    {
+      "name": "intellisense-vsc"
+    },
+    {
+      "name": "export-html"
+    },
+    {
+      "name": "export-assets"
+    }
+  ]
+}    
 `;
 
     await fs.writeFile(

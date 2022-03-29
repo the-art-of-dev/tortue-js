@@ -6,9 +6,14 @@ import {
   TortueShellActionData,
 } from "./tortueShell";
 
+import { stdShells } from "@stdShells/stdShells";
+
 async function loadTortueShell(
   config: TortueShellConfig,
 ): Promise<TortueShell> {
+  const stdShell = stdShells.find((s) => s.name == config.name);
+  if (stdShell) return stdShell;
+
   const shell: TortueShell = {
     name: config.name,
     actions: {},

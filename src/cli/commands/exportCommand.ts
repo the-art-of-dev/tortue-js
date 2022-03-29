@@ -5,6 +5,7 @@ import exportHTMLShell from "@stdShells/exportHTML";
 import exportAssets from "@stdShells/exportAssets";
 import intellisenseVSC from "@stdShells/intellisenseVSC";
 import { TortueShell } from "@lib/tortueShells";
+import { stdShells } from "@stdShells/stdShells";
 
 export interface ExportCommandOptions {
   config: string; //json configuration file path
@@ -22,17 +23,9 @@ export class ExportCommand extends Command {
     this.action(this._action);
   }
 
-  private _getDefaultShells(): TortueShell[] {
-    const defaultShells: TortueShell[] = [];
-    defaultShells.push(exportHTMLShell);
-    defaultShells.push(exportAssets);
-    defaultShells.push(intellisenseVSC);
-    return defaultShells;
-  }
-
   private async _action(options: ExportCommandOptions): Promise<void> {
     const tortue = new Tortue(options.config);
-    const defaultShells = this._getDefaultShells();
+    const defaultShells = stdShells;
     const pipeline = new TortuePipeline(tortue, defaultShells);
     await pipeline.execute();
   }

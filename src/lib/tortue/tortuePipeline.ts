@@ -21,7 +21,9 @@ export class TortuePipeline {
 
     //load shells
     await this._tortue.loadShells();
-    this._shells.push(...this._tortue.shells);
+    if (this._tortue.replaceShells) {
+      this._shells = [...this._tortue.shells];
+    }
 
     await this.runShells(TortuePipelineEvent.CONFIG_LOADED);
 
