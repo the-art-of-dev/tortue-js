@@ -2,5 +2,15 @@
   "componentsDir": "./testData/components",
   "layoutsDir": "./testData/layouts",
   "pagesDir": "./testData/pages",
-  "shellsConfig": []
+  "shellsConfig": [
+    {
+      "name": "intellisense-vsc"
+    },
+    {
+      "name": "export-html"
+    },
+    {
+      "name": "export-assets"
+    }
+  ]
 }
