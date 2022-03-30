@@ -362,6 +362,8 @@ Pipeline defines events that can occur while running pipeline.
 ## Contributors
 
 - [buaa00](https://github.com/buaa00)
+- [djoricmilos](https://github.com/djoricmilos)
+- [miletic96](https://github.com/miletic96)
 - [nadjarajk](https://github.com/nadjarajk)
 
 ## Sponsors
