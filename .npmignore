@@ -9,7 +9,6 @@ tests
 testData
 .prettierrc.json
 components-html-custom-data.json
-dist
 dist-*
 coverage
 .vscode
