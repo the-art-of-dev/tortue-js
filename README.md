@@ -11,8 +11,19 @@ _Website development made easy_
   - [Terminology](#terminology)
     - [Context](#context)
     - [Component](#component)
+      - [Definition](#definition)
+      - [Representation](#representation)
+      - [Calling component](#calling-component)
+      - [Props](#props)
+      - [Content](#content)
     - [Page](#page)
+      - [Definition](#definition-1)
+      - [Representation](#representation-1)
     - [Layout](#layout)
+      - [Definition](#definition-2)
+      - [Representation](#representation-2)
+      - [Finidng layout for page](#finidng-layout-for-page)
+      - [Head and Content](#head-and-content)
     - [Tortue](#tortue)
     - [Pipeline](#pipeline)
     - [Process](#process)
@@ -110,7 +121,7 @@ Home-Header-Image
 
 In code we can represent context through the interface (js like pseudo-code):
 
-```js
+```ts
 interface Context {
   name: string;
   children: Context[];
@@ -125,14 +136,19 @@ We can separate contexts into two groups, **abstract** and **concrete** contexts
 
 ---
 
+#### Definition
+
 A component is a concrete context that represents the minimal building block of every website. Components can be used to build other components. Every component consists of its:
 
+- Name (Context)
 - Structure (HTML)
 - Style (CSS)
 - Logic (JS)
 - Documentation (MD)
 
 Including one component into another means including its structure, style, and logic together.
+
+#### Representation
 
 We "physically" represent component using a following folder and file structure:
 
@@ -148,7 +164,7 @@ We "physically" represent component using a following folder and file structure:
 
 In code we can represent components through interface (js like pseudo code):
 
-```js
+```ts
 interface Component {
   name: string;
   html: string;
@@ -157,6 +173,8 @@ interface Component {
   doc: string;
 }
 ```
+
+#### Calling component
 
 Components include another component by including the HTML tag in its structure, with the context name of the component it wants to include. Example?
 
@@ -181,17 +199,88 @@ _Home/Header/Section/index.html_
 </div>
 ```
 
+#### Props
+
+Components have ability to receive custom properties named props. Props are passed to component while calling the component. To pass a prop into comp
+
+_Home/Info/Box/index.html_
+
+```html
+<section class="home-info-box">
+  <a href="tel:{{phone}}"> {{phone}}</a>
+  <a href="mailto:{{mail}}"> {{mail}}</a>
+</section>
+```
+
+_Home/Header/Section/index.html_
+
+```html
+<div class="home-header-section">
+  <!-- This is a component call that include passing props to component -->
+  <Home-Info-Box
+    tp-mail="info@somedomain.com"
+    tp-phone="(253) 616-4991"
+  ></Home-Info-Box>
+
+  <h1>Main header</h1>
+  <Home-Header-Image></Home-Header-Image>
+  <p>Some short description</p>
+</div>
+```
+
+Note that field we used eariler in HTML `{{phone}}` is propagated to `Common-Info-Box` component by adding `tp-phone` attribute. So prefix for sending prosp to component is `tp-`;
+
+Prop naming must follow:
+
+- follow snake case syntax in HTML (example: `tp-info-email`)
+- in rendering use same syntax (example: `{{info-email}}`)
+- props should only contain letters and numbers
+
+#### Content
+
+Components can render passed children through by using special prop named `innerContent`. To display this prop we use `{{{innerContent}}}` in our components.
+
+_Home/Info/Box/index.html_
+
+```html
+<section class="home-info-box">
+  {{{innerContent}}}
+  <a href="tel:{{phone}}"> {{phone}}</a>
+  <a href="mailto:{{mail}}"> {{mail}}</a>
+</section>
+```
+
+```html
+<div class="home-header-section">
+  <Home-Info-Box tp-mail="info@somedomain.com" tp-phone="(253) 616-4991">
+    <p>Here is custom text before mail and phone</p>
+    <!-- Everythin between component tags represent children passed as innerContent -->
+  </Home-Info-Box>
+
+  <h1>Main header</h1>
+  <Home-Header-Image></Home-Header-Image>
+  <p>Some short description</p>
+</div>
+```
+
+> NOTICE: Props are rendered using Mustache templating engine.
+
 ---
 
 ### Page
 
 ---
 
+#### Definition
+
 A page is a concrete context that consists of components and represents a website page. Think of it as a template for components. Every page consists of:
 
+- Name (Context)
 - Structure (HTML)
 - Style (CSS)
 - Logic (JS)
+
+#### Representation
 
 We "physically" represent pages using the following folder and file structure:
 
@@ -202,9 +291,9 @@ We "physically" represent pages using the following folder and file structure:
   📄 script.js
 ```
 
-In code we can represent pages through interface (js like pseudo code):
+In code we can represent pages through the interface (js like pseudo code):
 
-```js
+```ts
 interface Page {
   name: string;
   html: string;
@@ -221,7 +310,76 @@ A page can include components in the same way components include each other (rea
 
 ---
 
-A layout is a concrete context that represents a template for pages.
+#### Definition
+
+A layout represents a context(abstract or concrete) that is a template for one or multiple pages. If layout represents concrete context it will be used as a template for only one page. If layout represents abstract context, it will serve as a template for all the children pages of that context. Every layout consists of:
+
+- Name (Context)
+- Structure (HTML)
+
+#### Representation
+
+We "physically" represent layouts using the following folder and file structure:
+
+```
+📂 Blogs/
+  📄 layout.html
+```
+
+In code we can represent layouts through the interface (js like pseudo code):
+
+```ts
+interface Layout {
+  name: string;
+  html: string;
+}
+```
+
+#### Finidng layout for page
+
+Every page by default uses default layout(`layouts/layout.html`) if defined. If you want to create layout for specific page or context of pages create layout that follow context hierarchy of that page.
+
+Example:
+
+Pages:
+
+- Home (`pages/Home`)
+- Blogs-FirstBlog (`pages/Blogs/FirstBlog`)
+- Blogs-SecondBlog (`pages/Blogs/SecondBlog`)
+
+Layouts:
+
+- DEFAULT (`layouts/layout.html`)
+- Blogs (`layouts/Blogs/layout.html`)
+
+Pages `Blogs-FirstBlog` and `Blogs-SecondBlog` will use `Blogs` layout, while `Home` page will use `DEFAULT` layout.
+
+#### Head and Content
+
+Example:
+
+_layout.html_
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    {{{head}}}
+  </head>
+  <body>
+    {{{content}}}
+  </body>
+</html>
+```
+
+`{{{head}}}` represents place where pages `<head>` tag will be included.
+`{{{content}}}` represents place where pages `<body>` tag will be included.
+
+> NOTICE: Props are rendered using Mustache templating engine.
 
 ---
 
@@ -240,8 +398,8 @@ Tortue is a set of tools that provides the following actions:
 
 In code we can represent tortue through interface (js like pseudo code):
 
-```js
-interface Tortue{
+```ts
+interface Tortue {
   loadConfig();
   loadShells();
   buildComponents();
@@ -364,8 +522,8 @@ Pipeline defines events that can occur while running pipeline.
 
 - [buaa00](https://github.com/buaa00)
 - [djoricmilos](https://github.com/djoricmilos)
-- [miletic96](https://github.com/miletic96)
 - [nadjarajk](https://github.com/nadjarajk)
+- [miletic96](https://github.com/miletic96)
 
 ## Sponsors
 
