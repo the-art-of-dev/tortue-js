@@ -4,7 +4,14 @@ import { Page, PageBuilder, renderPage } from "@lib/pages";
 import { buildTortueShells, TortueShell } from "@lib/tortueShells";
 import { DEFAULT_TORTUE_CONFIG, TortueConfig } from "./tortueConfig";
 import fsSync from "fs";
-import fs from "fs/promises";
+import { promisify } from "util";
+const fs = {
+  readFile: promisify(fsSync.readFile),
+  writeFile: promisify(fsSync.writeFile),
+  mkdir: promisify(fsSync.mkdir),
+  readdir: promisify(fsSync.readdir),
+};
+
 import path from "path";
 import { findPageLayout } from "@lib/layouts/layout";
 

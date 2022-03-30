@@ -1,5 +1,12 @@
 import { TortueShell } from "@lib/tortueShells";
-import fs from "fs/promises";
+import fsSync from "fs";
+import { promisify } from "util";
+const fs = {
+  readFile: promisify(fsSync.readFile),
+  writeFile: promisify(fsSync.writeFile),
+  mkdir: promisify(fsSync.mkdir),
+  readdir: promisify(fsSync.readdir),
+};
 
 const intellisenseVSC: TortueShell = {
   name: "intellisense-vsc",

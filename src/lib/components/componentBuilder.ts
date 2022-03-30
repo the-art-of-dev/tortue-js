@@ -1,7 +1,12 @@
 import path from "path";
 import { Context, ContextTreeBuilder } from "@lib/contexts";
 import fsSync from "fs";
-import fs from "fs/promises";
+import { promisify } from "util";
+const fs = {
+  readFile: promisify(fsSync.readFile),
+  writeFile: promisify(fsSync.writeFile),
+  mkdir: promisify(fsSync.mkdir),
+};
 import { Component } from "./component";
 import { ComponentRegistry, MapComponentRegistry } from "./componentRegistry";
 

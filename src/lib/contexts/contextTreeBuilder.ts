@@ -2,7 +2,13 @@ import path from "path";
 import { ContextTree } from "./contextTree";
 import { Context } from "./context";
 import fsSync from "fs";
-import fs from "fs/promises";
+import { promisify } from "util";
+const fs = {
+  readFile: promisify(fsSync.readFile),
+  writeFile: promisify(fsSync.writeFile),
+  mkdir: promisify(fsSync.mkdir),
+  readdir: promisify(fsSync.readdir),
+};
 
 //Helper functions
 const dirContextFilter = (c: Context) =>

@@ -1,8 +1,15 @@
 import { Command } from "commander";
 import path from "path";
 import simpleGit from "simple-git";
-import fs from "fs/promises";
-import fsSync, { read } from "fs";
+import fsSync from "fs";
+
+import { promisify } from "util";
+const fs = {
+  readFile: promisify(fsSync.readFile),
+  writeFile: promisify(fsSync.writeFile),
+  mkdir: promisify(fsSync.mkdir),
+};
+
 import chalk from "chalk";
 
 const log = console.log;
