@@ -10,18 +10,20 @@ _Website development made easy_
   - [Quick start](#quick-start)
   - [Terminology](#terminology)
     - [Context](#context)
-    - [Component](#component)
       - [Definition](#definition)
       - [Representation](#representation)
+    - [Component](#component)
+      - [Definition](#definition-1)
+      - [Representation](#representation-1)
       - [Calling component](#calling-component)
       - [Props](#props)
       - [Content](#content)
     - [Page](#page)
-      - [Definition](#definition-1)
-      - [Representation](#representation-1)
-    - [Layout](#layout)
       - [Definition](#definition-2)
       - [Representation](#representation-2)
+    - [Layout](#layout)
+      - [Definition](#definition-3)
+      - [Representation](#representation-3)
       - [Finidng layout for page](#finidng-layout-for-page)
       - [Head and Content](#head-and-content)
     - [Tortue](#tortue)
@@ -82,6 +84,8 @@ npm run dev
 
 ---
 
+#### Definition
+
 Context is a named abstract or concrete part of the website we're building. Examples?
 
 - Header
@@ -98,6 +102,8 @@ The need for structuring contexts resolves in the context’s recursive nature. 
   - Navigation
   - Header
     - Image
+
+#### Representation
 
 We "physically" represent contexts using the following folder structure:
 
