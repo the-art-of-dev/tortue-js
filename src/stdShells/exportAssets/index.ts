@@ -55,7 +55,6 @@ const exportAssets: TortueShell = {
             page.js,
           );
 
-          const dom = new JSDOM(page.html);
           const scriptTag = dom.window.document.createElement("script");
           scriptTag.src = `/assets/js/${page.name}.js`;
           dom.window.document.body.appendChild(scriptTag);

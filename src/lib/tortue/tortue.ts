@@ -1,12 +1,11 @@
 import { ComponentBuilder, ComponentRegistry } from "@lib/components";
-import { Layout } from "@lib/layouts/layout";
+import { Layout, LayoutBuilder } from "@lib/layouts";
 import { Page, PageBuilder, renderPage } from "@lib/pages";
 import { buildTortueShells, TortueShell } from "@lib/tortueShells";
 import { DEFAULT_TORTUE_CONFIG, TortueConfig } from "./tortueConfig";
 import fsSync from "fs";
 import fs from "fs/promises";
 import path from "path";
-import { LayoutBuilder } from "@lib/layouts/layoutBuilder";
 
 export class Tortue {
   private _config: TortueConfig;

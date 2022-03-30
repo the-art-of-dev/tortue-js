@@ -34,6 +34,7 @@ function renderElement(
   const renderProps = crr.extractProps<any>(el);
   const defaultProps = crr.extractProps<any>(componentEl);
 
+  if (el.innerHTML) renderProps["lbContent"] = el.innerHTML; //todo: deprecated
   if (el.innerHTML) renderProps["innerContent"] = el.innerHTML;
   for (const prop of Object.keys(defaultProps)) {
     if (!renderProps[prop]) {
