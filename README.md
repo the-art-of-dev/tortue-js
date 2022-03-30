@@ -32,10 +32,6 @@ _Website development made easy_
 
 ## Concepts
 
----
-
----
-
 Tortue is a flexible website building framework with educative nature, mainly ment for static website development. Core concept of Tortue is in defining contexts to parts of a website that are reusable and easier to organize in a granular way, thik of it like a templating engine with ability to scale. Defining contexts through the tortue hierarchy(Components,Layouts,Pages) provides easier way to maintain codebase and reuse some of the parts in other projects. Tortues educative nature consists in allowing entry level web developers to practice abstraction by using only HTML. Because Tortue should be flexible as told, it provides it's own plugin system named Tortue Shells. At the end Tortue is opinionated in many things, but will try to privde as many features as long them don't break Tortue philosophy.
 
 ---
@@ -43,10 +39,6 @@ Tortue is a flexible website building framework with educative nature, mainly me
 ---
 
 ## Quick start
-
----
-
----
 
 Install tortue globally:
 
@@ -72,10 +64,6 @@ npm run dev
 ---
 
 ## Terminology
-
----
-
----
 
 ### Context
 
