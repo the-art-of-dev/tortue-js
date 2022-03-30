@@ -5,6 +5,7 @@ import {
   ComponentRegistry,
 } from "@lib/components";
 import Mustache from "mustache";
+import { Layout } from "@lib/layouts";
 
 export interface RenderPageOptions {
   destPath: string;
@@ -52,9 +53,13 @@ function renderElement(
   depList.add(comp.name);
 }
 
-export function renderPage(page: Page, registry: ComponentRegistry): Page {
+export function renderPage(
+  page: Page,
+  registry: ComponentRegistry,
+  layout: Layout,
+): Page {
   const crr = new ComponentRegisterRendererJSDOM(registry);
-  const dom = new JSDOM(page.html);
+  const dom = new JSDOM(layout.html);
   const dependecyList = new Set<string>();
   const renderedPage = { ...page };
 

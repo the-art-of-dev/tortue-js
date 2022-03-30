@@ -20,7 +20,7 @@ export class ComponentRegisterRendererJSDOM
 
   public extractProps<T>(htmlEl: HTMLElement): T {
     const props = {};
-    const propPrefixes = ["lb-props-", "tp-"];
+    const propPrefixes = ["lb-props-", "tp-"]; //todo: lb-props- deprecated
 
     for (let i = 0; i < htmlEl.attributes?.length; i++) {
       const attr = htmlEl.attributes.item(i);

@@ -6,6 +6,7 @@ import { DEFAULT_TORTUE_CONFIG, TortueConfig } from "./tortueConfig";
 import fsSync from "fs";
 import fs from "fs/promises";
 import path from "path";
+import { findPageLayout } from "@lib/layouts/layout";
 
 export class Tortue {
   private _config: TortueConfig;
@@ -74,7 +75,13 @@ export class Tortue {
   public async renderPages(): Promise<void> {
     const newPages = [];
     for (let page of this.pages) {
-      newPages.push(await renderPage(page, this.componentRegistry));
+      newPages.push(
+        await renderPage(
+          page,
+          this.componentRegistry,
+          findPageLayout(page.name, this._layouts),
+        ),
+      );
     }
     this.pages = newPages;
   }
