@@ -1,7 +1,7 @@
 {
   "name": "tortue",
   "version": "1.0.0",
-  "description": "Static website development framework",
+  "description": "Website development made easy",
   "main": "index.js",
   "scripts": {
     "build": "rollup -c rollup.config.js",
@@ -12,6 +12,10 @@
     "count-tests": "cloc tests/*.ts tests/**/*.ts tests/**/**/*.ts tests/**/**/**/*.ts"
   },
   "author": "Vukoman Stojanovic",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/the-art-of-dev/tortue-js.git"
+  },
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.17.5",
@@ -38,5 +42,6 @@
     "jsdom": "^19.0.0",
     "mustache": "^4.2.0",
     "simple-git": "^3.5.0"
-  }
+  },
+  "bin": "./dist/index.js"
 }

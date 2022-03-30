@@ -14,6 +14,6 @@ describe("Page Renderer", () => {
     const compRegistry = await compBuilder.buildAllComponents();
 
     const homePage = pages.find((p) => p.name.toLowerCase() == "home");
-    const page = renderPage(homePage, compRegistry);
+    const page = renderPage(homePage, compRegistry, null);
   });
 });

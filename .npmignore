@@ -6,3 +6,10 @@ rollup.config.*
 tsconfig.json
 node_modules
 tests
+testData
+.prettierrc.json
+components-html-custom-data.json
+dist
+dist-*
+coverage
+.vscode
