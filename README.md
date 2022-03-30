@@ -8,6 +8,11 @@ _Website development made easy_
   - [Table of content](#table-of-content)
   - [Concepts](#concepts)
   - [Quick start](#quick-start)
+  - [Tortue processes](#tortue-processes)
+  - [Tortue Configuration](#tortue-configuration)
+    - [Tortue Shell Configuration](#tortue-shell-configuration)
+  - [Tortue Shells](#tortue-shells)
+  - [Standard Shells](#standard-shells)
   - [Terminology](#terminology)
     - [Context](#context)
       - [Definition](#definition)
@@ -28,16 +33,12 @@ _Website development made easy_
       - [Head and Content](#head-and-content)
     - [Tortue](#tortue)
     - [Pipeline](#pipeline)
+      - [Definition](#definition-4)
     - [Process](#process)
+      - [Export process](#export-process)
+      - [Watch process](#watch-process)
     - [Shell](#shell)
     - [CLI App](#cli-app)
-  - [Installation](#installation)
-  - [Tortue processes](#tortue-processes)
-  - [Tortue Configuration](#tortue-configuration)
-    - [Tortue Shell Configuration](#tortue-shell-configuration)
-  - [Tortue Shells](#tortue-shells)
-  - [Standard Shells](#standard-shells)
-  - [Custom Shells](#custom-shells)
   - [Contributors](#contributors)
   - [Sponsors](#sponsors)
 
@@ -71,8 +72,177 @@ Run development environment:
 
 ```
 cd my-project
+npm install
 npm run dev
 ```
+
+Run production build after finishing development:
+
+```
+npm run build
+```
+
+---
+
+---
+
+## Tortue processes
+
+There are two main Tortue processes exposed through CLI application.
+
+- Watch
+- Export
+
+You can run the following command to start watch process.
+
+```
+tortue watch
+```
+
+Watch process is used for development environment.
+
+You can run the following command to start export process.
+
+```
+tortue export
+```
+
+Export process is used for production build.
+
+---
+
+---
+
+## Tortue Configuration
+
+Configuration interface
+
+```ts
+interface TortueConfig {
+  componentsDir: string;
+  pagesDir: string;
+  layoutsDir: string;
+  shellsConfig: TortueShellConfig[];
+}
+```
+
+Default configuration
+
+```json
+{
+  "componentsDir": "components",
+  "layoutsDir": "layouts",
+  "pagesDir": "pages"
+}
+```
+
+Example of custom configuration
+
+```json
+{
+  "componentsDir": "./subdir/components",
+  "layoutsDir": "./subdir/layouts",
+  "pagesDir": "./subdir/pages",
+  "shellsConfig": [
+    {
+      "name": "intellisense-vsc"
+    },
+    {
+      "name": "export-assets"
+    },
+    {
+      "name": "export-html",
+      "args": {
+        "exportDir": "./subdir/dist-html"
+      }
+    }
+  ]
+}
+```
+
+---
+
+### Tortue Shell Configuration
+
+---
+
+Configuration interface
+
+```ts
+interface TortueShellConfig {
+  name: string;
+  path: string;
+  args: any;
+  events: TortuePipelineEvent[];
+}
+```
+
+---
+
+---
+
+## Tortue Shells
+
+Tortue Shells are the way to enhance your Tortue environment. Shells are just plain Javascript objects.
+
+Example:
+
+```ts
+const customShell = {
+  name: "custom-shell",
+  actions: {
+    configLoaded: async (data) => {
+      //your code here...
+
+      return data;
+    },
+    componentsBuilt: async (data) => {
+      //your code here...
+
+      return data;
+    },
+    layoutsBuilt: async (data) => {
+      //your code here...
+      return data;
+    },
+    pagesBuilt: async (data) => {
+      //your code here...
+
+      return data;
+    },
+    renderFinished: async (data) => {
+      //your code here...
+
+      return data;
+    },
+  },
+};
+```
+
+Every action is callback that receives `data` and can interact with it and change it. Every action as a result must return same type of object as `data` is.
+
+`data` object interface:
+
+```ts
+export interface TortueShellActionData {
+  registry?: ComponentRegistry;
+  pages?: Page[];
+  layouts?: Layout[];
+  config: TortueConfig;
+}
+```
+
+---
+
+---
+
+## Standard Shells
+
+List of standard preloaded shells is:
+
+- [export-html](src/stdShells/exportHTML/index.ts) - Exports pages in `dist-html` directory
+- [export-assets](src/stdShells/exportAssets/index.ts) - Exports CSS and JS as assets in `assets` directory
+- [intellisense-vsc](src/stdShells/intellisenseVSC/index.ts) - Exports HTML customData for VS Code
 
 ---
 
@@ -402,16 +572,31 @@ Tortue is a set of tools that provides the following actions:
 - Build pages
 - Render pages
 
-In code we can represent tortue through interface (js like pseudo code):
+and provides the following data:
+
+- Configuration
+- Shells
+- Components
+- Pages
+- Layouts
+
+In code we can represent tortue through the interface (js like pseudo code):
 
 ```ts
 interface Tortue {
-  loadConfig();
-  loadShells();
-  buildComponents();
-  buildLayouts();
-  buildPages();
-  renderPages();
+  //actions
+  loadConfig(): Promise<void>;
+  loadShells(): Promise<void>;
+  buildComponents(): Promise<void>;
+  buildLayouts(): Promise<void>;
+  buildPages(): Promise<void>;
+  renderPages(): Promise<void>;
+  //data
+  config: TortueConfiguration; //Configuration
+  shells: TortueShell[]; //Shells
+  componentRegistry: ComponentRegistry; //Components
+  pages: Page[]; //Pages
+  layouts: Layout[]; //Layouts
 }
 ```
 
@@ -421,9 +606,13 @@ interface Tortue {
 
 ---
 
+#### Definition
+
 Pipeline represents Tortue actions and data flow orchestration.
 
-Pipeline defines events that can occur while running pipeline.
+Pipeline defines states that can occur while running pipeline.
+
+Example of the Tortue export pipeline:
 
 - COMPONENTS_BUILT
 - PAGES_BUILT
@@ -466,11 +655,25 @@ Pipeline defines events that can occur while running pipeline.
 
 ```
 
+Tortue currently uses only one Pipeline and that's the one shown above.
+
+Pipeline provides abbility to create plugins(_Shells_) that can interact with Tortue data in some of the Pipeline states.
+
 ---
 
 ### Process
 
 ---
+
+Process represents a way of using a pipeline.
+
+#### Export process
+
+Export process uses export pipeline to provide a way for building and exporting your website in wanted structure.
+
+#### Watch process
+
+Watch process uses export pipeline to ease a website development process by running export pipeline every time some of the website parts are created, removed or modified.
 
 ---
 
@@ -478,51 +681,18 @@ Pipeline defines events that can occur while running pipeline.
 
 ---
 
+Tortue Shell is a plugin system around Tortue Pipeline. Every Shell is consisted of:
+
+- Name
+- Actions
+
+Actions are callbacks that can process and change tortue data every time pipeline finds in a state that represent an action name.
+
 ---
 
 ### CLI App
 
 ---
-
----
-
----
-
-## Installation
-
----
-
----
-
-## Tortue processes
-
----
-
----
-
-## Tortue Configuration
-
----
-
-### Tortue Shell Configuration
-
----
-
----
-
-## Tortue Shells
-
----
-
----
-
-## Standard Shells
-
----
-
----
-
-## Custom Shells
 
 ## Contributors
 
