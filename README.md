@@ -113,6 +113,7 @@ In code we can represent context through the interface (js like pseudo-code):
 ```js
 interface Context {
   name: string;
+  children: Context[];
 }
 ```
 
