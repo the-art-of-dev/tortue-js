@@ -25,6 +25,8 @@ _Website development made easy_
   - [Tortue Shells](#tortue-shells)
   - [Standard Shells](#standard-shells)
   - [Custom Shells](#custom-shells)
+  - [Contributors](#contributors)
+  - [Sponsors](#sponsors)
 
 ---
 
@@ -32,7 +34,7 @@ _Website development made easy_
 
 ## Concepts
 
-Tortue is a flexible website building framework with educative nature, mainly ment for static website development. Core concept of Tortue is in defining contexts to parts of a website that are reusable and easier to organize in a granular way, thik of it like a templating engine with ability to scale. Defining contexts through the tortue hierarchy(Components,Layouts,Pages) provides easier way to maintain codebase and reuse some of the parts in other projects. Tortues educative nature consists in allowing entry level web developers to practice abstraction by using only HTML. Because Tortue should be flexible as told, it provides it's own plugin system named Tortue Shells. At the end Tortue is opinionated in many things, but will try to privde as many features as long them don't break Tortue philosophy.
+Tortue is a flexible website building framework with an educative nature, mainly meant for static website development. The core concept of Tortue lies in defining contexts to parts of a website that are reusable and easier to organize in a granular way - think of it as a templating engine with the ability to scale. Defining contexts through the Tortue hierarchy (Components, Layouts, Pages) provides an easier way to maintain the codebase and reuse some of its parts in other projects. Tortue’s educative nature consists of allowing entry-level web developers to practice abstraction by using only HTML. Because Tortue should be flexible as mentioned, it provides its own plugin system named Tortue Shells. In the end, Tortue is opinionated on many things, but will try to provide as many features as long as they don't stray away from the Tortue philosophy.
 
 ---
 
@@ -69,7 +71,7 @@ npm run dev
 
 ---
 
-Context is named abstract or concrete part of the website we're building. Examples?
+Context is a named abstract or concrete part of the website we're building. Examples?
 
 - Header
 - Navigation
@@ -77,16 +79,16 @@ Context is named abstract or concrete part of the website we're building. Exampl
 - Page
 - Image
 
-We see different level of abstraction in these items. The point is anything can be a context.
+We see different levels of abstraction in these items. The point is that anything can be a context.
 
-Need for structuring contexts resolves in context recursive nature. Context can have sub contexts(children). Example?
+The need for structuring contexts resolves in the context’s recursive nature. A context can have sub-contexts (children). Example?
 
 - Home
   - Navigation
   - Header
     - Image
 
-We "physically" represent contexts using following folder structure:
+We "physically" represent contexts using the following folder structure:
 
 ```
 📂 Home/
@@ -95,9 +97,9 @@ We "physically" represent contexts using following folder structure:
     📂 Image
 ```
 
-To represent this hierarchy in human readble way, context names are represented by contexts full path in hierarchy. Every level in context name is delmited by `-`(minus), so context names shouldn't contain that character.
+To represent this hierarchy in a humanly comprehensible way, context names are represented by the context's full path in the hierarchy. Every level in the context name is delimited by `-`(minus), so context names shouldn't contain that character.
 
-Context names from above example:
+Context names from the above example:
 
 ```
 Home
@@ -106,7 +108,7 @@ Home-Header
 Home-Header-Image
 ```
 
-In code we can represent context through interface(js like pseudo code):
+In code we can represent context through the interface (js like pseudo-code):
 
 ```js
 interface Context {
@@ -114,7 +116,7 @@ interface Context {
 }
 ```
 
-We can separate contexts in two groups, **abstract** and **concrete** contexts. Only difference between these two groups is that **concrete contexts doesn't have children**.
+We can separate contexts into two groups, **abstract** and **concrete** contexts. The only difference between these two groups is that **concrete contexts doesn't have children**.
 
 ---
 
@@ -122,14 +124,14 @@ We can separate contexts in two groups, **abstract** and **concrete** contexts. 
 
 ---
 
-Component is concrete context that represent minimal building block of every website. Components can be used to build other components. Every component is consisted of it's:
+A component is a concrete context that represents the minimal building block of every website. Components can be used to build other components. Every component consists of its:
 
 - Structure (HTML)
 - Style (CSS)
 - Logic (JS)
 - Documentation (MD)
 
-Including one component into another means including it's structure, style and logic together.
+Including one component into another means including its structure, style, and logic together.
 
 We "physically" represent component using a following folder and file structure:
 
@@ -143,7 +145,7 @@ We "physically" represent component using a following folder and file structure:
       📄 doc.md
 ```
 
-In code we can represent component through interface(js like pseudo code):
+In code we can represent components through interface (js like pseudo code):
 
 ```js
 interface Component {
@@ -155,9 +157,9 @@ interface Component {
 }
 ```
 
-Component include another component by including html tag, in it's structure, with context name of component it wants to include. Example?
+Components include another component by including the HTML tag in its structure, with the context name of the component it wants to include. Example?
 
-_Home-Header-Image/index.html_
+_Home/Header/Image/index.html_
 
 ```html
 <div class="home-header-image">
@@ -165,7 +167,7 @@ _Home-Header-Image/index.html_
 </div>
 ```
 
-_Home-Header-Section/index.html_
+_Home/Header/Section/index.html_
 
 ```html
 <div class="home-header-section">
@@ -184,13 +186,13 @@ _Home-Header-Section/index.html_
 
 ---
 
-Page is a concrete context that is consisted of components and represent website page. Thik of it like template for components. Every page is consisted of:
+A page is a concrete context that consists of components and represents a website page. Think of it as a template for components. Every page consists of:
 
 - Structure (HTML)
 - Style (CSS)
 - Logic (JS)
 
-We "physically" represent page using a following folder and file structure:
+We "physically" represent pages using the following folder and file structure:
 
 ```
 📂 Home/
@@ -199,7 +201,7 @@ We "physically" represent page using a following folder and file structure:
   📄 script.js
 ```
 
-In code we can page this through interface(js like pseudo code):
+In code we can represent pages through interface (js like pseudo code):
 
 ```js
 interface Page {
@@ -210,7 +212,7 @@ interface Page {
 }
 ```
 
-Page can include components in the same way components include each other(read [Component](#component)).
+A page can include components in the same way components include each other (read [Component](#component)).
 
 ---
 
@@ -218,7 +220,7 @@ Page can include components in the same way components include each other(read [
 
 ---
 
-Layout is a concrete context that represent template for pages.
+A layout is a concrete context that represents a template for pages.
 
 ---
 
@@ -226,7 +228,7 @@ Layout is a concrete context that represent template for pages.
 
 ---
 
-Tortue is set of tools that provides following actions:
+Tortue is a set of tools that provides the following actions:
 
 - Load configuration
 - Load shells
@@ -235,7 +237,7 @@ Tortue is set of tools that provides following actions:
 - Build pages
 - Render pages
 
-In code we can represent tortue through interface(js like pseudo code):
+In code we can represent tortue through interface (js like pseudo code):
 
 ```js
 interface Tortue{
@@ -254,7 +256,7 @@ interface Tortue{
 
 ---
 
-Pipeline represents tortue actions and data flow orchestration.
+Pipeline represents Tortue actions and data flow orchestration.
 
 Pipeline defines events that can occur while running pipeline.
 
@@ -266,7 +268,7 @@ Pipeline defines events that can occur while running pipeline.
 
 ```
 
-  TORTUE PIPELINE
+  TORTUE PIPELINE EXAMPLE
   ────────────────────────
 
 
@@ -356,3 +358,12 @@ Pipeline defines events that can occur while running pipeline.
 ---
 
 ## Custom Shells
+
+## Contributors
+
+- [buaa00](https://github.com/buaa00)
+- [nadjarajk](https://github.com/nadjarajk)
+
+## Sponsors
+
+[<img src="https://localsalesforce.io/assets/images/logo.svg" width="200px" style="background-color:black">](https://localsalesforce.io)
