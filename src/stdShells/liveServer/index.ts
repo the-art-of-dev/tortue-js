@@ -29,7 +29,7 @@ const liveServerShell: TortueShell = {
       if (isRunning) return data;
 
       const config = data.config.shellsConfig.find(
-        (s) => s.name == "export-html",
+        (s) => s.name == "live-server",
       );
       const args = config?.args as LiveServerArgs;
 

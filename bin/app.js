@@ -644,7 +644,7 @@ const liveServerShell = {
             var _a, _b, _c, _d, _e;
             if (isRunning)
                 return data;
-            const config = data.config.shellsConfig.find((s) => s.name == "export-html");
+            const config = data.config.shellsConfig.find((s) => s.name == "live-server");
             const args = config === null || config === void 0 ? void 0 : config.args;
             const params = {
                 port: (_a = args === null || args === void 0 ? void 0 : args.port) !== null && _a !== void 0 ? _a : 8081,
@@ -662,11 +662,134 @@ const liveServerShell = {
     },
 };
 
+const BODY_REG_EXP = /<body[^>]*>/i;
+const END_BODY_REG_EXP = /<\/body>/i;
+const END_HEAD_REG_EXP = /<\/head>/i;
+const FOOTER_REG_EXP = /<footer[^>]*>/i;
+function extractWPHeader(html) {
+    const bodyMatch = html.match(BODY_REG_EXP); //todo: add body_class
+    if (!bodyMatch)
+        return "";
+    const bodyTagLength = bodyMatch[0].length;
+    let header = html.slice(0, bodyMatch.index + bodyTagLength);
+    const endHeadMatch = header.match(END_HEAD_REG_EXP);
+    if (endHeadMatch) {
+        header = `${header.slice(0, endHeadMatch.index)}<?php wp_head(); ?>${header.slice(endHeadMatch.index)}`;
+    }
+    return `${header} <?php wp_body_open(); ?>`;
+}
+function generateWPTemplate(name) {
+    const template = `
+<?php
+/**
+ * Template Name: ${name}
+ */
+defined( 'ABSPATH' ) || exit;
+get_header('${name}');
+if ( have_posts() ) : 
+    while ( have_posts() ) : the_post();
+        the_content();
+    endwhile;
+else :
+    _e( 'Sorry, no posts matched your criteria.', 'textdomain' );
+endif;
+get_footer('${name}');
+`;
+    return template;
+}
+function extractWPBody(html) {
+    const bodyMatch = html.match(BODY_REG_EXP);
+    if (!bodyMatch)
+        return "";
+    const bodyTagLength = bodyMatch[0].length;
+    let footerMatch = html.match(FOOTER_REG_EXP);
+    if (!footerMatch) {
+        footerMatch = html.match(END_BODY_REG_EXP);
+    }
+    const body = html.slice(bodyMatch.index + bodyTagLength, footerMatch.index);
+    return body;
+}
+function extractWPFooter(html) {
+    let footerMatch = html.match(FOOTER_REG_EXP);
+    if (!footerMatch) {
+        footerMatch = html.match(END_BODY_REG_EXP);
+    }
+    let footer = html.slice(footerMatch.index);
+    const endBodyMatch = footer.match(END_BODY_REG_EXP);
+    if (endBodyMatch) {
+        const before = footer.slice(0, endBodyMatch.index);
+        const after = footer.slice(endBodyMatch.index);
+        footer = `${before}<?php wp_footer(); ?>${after}`;
+    }
+    return footer;
+}
+function exportWPHeader(page, outputDir) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const wpPageHeaderPath = path__default["default"].resolve(outputDir, `header-${page.name}.php`);
+        const header = extractWPHeader(page.html);
+        yield fs__default["default"].writeFile(wpPageHeaderPath, header);
+    });
+}
+function exportWPTemplate(page, outputDir) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const wpPageTemplatePath = path__default["default"].resolve(outputDir, `page-${page.name}.php`);
+        const template = generateWPTemplate(page.name);
+        yield fs__default["default"].writeFile(wpPageTemplatePath, template);
+    });
+}
+function exportWPContent(page, outputDir) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const wpPagePostPath = path__default["default"].resolve(outputDir, `post-${page.name}.php`);
+        const post = extractWPBody(page.html);
+        yield fs__default["default"].writeFile(wpPagePostPath, post);
+    });
+}
+function exportWPFooter(page, outputDir) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const wpPageFooterPath = path__default["default"].resolve(outputDir, `footer-${page.name}.php`);
+        const footer = extractWPFooter(page.html);
+        yield fs__default["default"].writeFile(wpPageFooterPath, footer);
+    });
+}
+function exportWPPage(page, outputDir) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const wpPage = Object.assign({}, page);
+        wpPage.name = wpPage.name.replace(/-/g, "_").toLowerCase();
+        yield exportWPHeader(wpPage, outputDir);
+        yield exportWPTemplate(wpPage, outputDir);
+        yield exportWPContent(wpPage, outputDir);
+        yield exportWPFooter(wpPage, outputDir);
+    });
+}
+
+const exportWPShell = {
+    name: "export-wp",
+    actions: {
+        renderFinished: (data) => __awaiter(void 0, void 0, void 0, function* () {
+            var _a;
+            const config = data.config.shellsConfig.find((s) => s.name == "export-wp");
+            const args = (_a = config === null || config === void 0 ? void 0 : config.args) !== null && _a !== void 0 ? _a : {
+                outputDir: "dist-wp",
+            };
+            const outputPath = path__default["default"].resolve(args.outputDir);
+            if (fs__default["default"].existsSync(outputPath)) {
+                yield fs__default["default"].remove(outputPath);
+            }
+            yield fs__default["default"].mkdirp(outputPath);
+            for (const page of data.pages) {
+                yield exportWPPage(page, outputPath);
+            }
+            return data;
+        }),
+    },
+};
+
 const stdShells = [];
 stdShells.push(exportHTML);
 stdShells.push(exportAssets);
 stdShells.push(intellisenseVSC);
 stdShells.push(liveServerShell);
+stdShells.push(exportWPShell);
 
 function loadTortueShell(config) {
     var _a;

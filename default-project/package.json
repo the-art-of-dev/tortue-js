@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "tortue export -c tortue.config.json",
+    "build": "tortue export -c tortue.config.build.json",
     "dev": "tortue watch -c tortue.config.json"
   },
   "keywords": [],
