@@ -1,6 +1,6 @@
 {
   "name": "tortue",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Website development made easy",
   "main": "dist/index.js",
   "scripts": {
