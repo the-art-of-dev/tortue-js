@@ -255,6 +255,7 @@ List of standard preloaded shells is:
 - [export-html](src/stdShells/exportHTML/index.ts) - Exports pages in `dist-html` directory
 - [export-assets](src/stdShells/exportAssets/index.ts) - Exports CSS and JS as assets in `assets` directory
 - [intellisense-vsc](src/stdShells/intellisenseVSC/index.ts) - Exports HTML customData for VS Code
+- [live-server](src/stdShells/liveServer/index.ts) - Starts live development server
 
 ---
 
