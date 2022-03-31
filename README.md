@@ -2,6 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-gold.svg)](https://opensource.org/licenses/MIT)
 [![npm](https://img.shields.io/npm/v/tortue)](https://www.npmjs.com/package/tortue)
+![npm type definitions](https://img.shields.io/npm/types/tortue)
 [![swtf](https://img.shields.io/badge/support-SWTF-brightgreen)](https://github.com/the-art-of-dev/swtf)
 
 <img src="logo.jpg" width="600px">

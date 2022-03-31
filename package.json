@@ -3,6 +3,7 @@
   "version": "1.0.5",
   "description": "Website development made easy",
   "main": "dist/index.js",
+  "types": "dist/types/src/index.d.ts",
   "scripts": {
     "build": "rollup -c rollup.config.js",
     "build:cli": "zx build-cli.mjs",
