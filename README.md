@@ -83,24 +83,50 @@ Install tortue globally:
 npm i -g tortue
 ```
 
-For help run:
+See help:
 
 ```
 tortue -h
 ```
 
-Create new project:
+Create a new project:
 
 ```
 tortue new my-project
 ```
 
-Run development environment:
+Run a development environment:
 
 ```
 cd my-project
 npm install
 npm run dev
+```
+
+Create a new component `Home-Hero-Section`:
+
+```
+tortue create comp Home-Hero-Section
+```
+
+By default new component comes only with the `index.html` file. If you want to include style, script or documentation use flags `-s`, `-j` or `-d` respectively.
+
+This command creates the `Home-Hero-Section` component with the `style.css` and `script.js` files as well
+
+```
+tortue create comp Home-Hero-Section -s -d
+```
+
+Create a new page `AboutUs`:
+
+```
+tortue create page AboutUs
+```
+
+For more info on create command run
+
+```
+tortue create -h
 ```
 
 Run production build after finishing development:
