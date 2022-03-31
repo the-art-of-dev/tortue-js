@@ -1,10 +1,16 @@
-# 🐢 tortue-js /tɔʁ.ty/
+# Tortue /tɔʁ.ty/
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-gold.svg)](https://opensource.org/licenses/MIT)
+[![npm](https://img.shields.io/npm/v/tortue)](https://www.npmjs.com/package/tortue)
+[![swtf](https://img.shields.io/badge/support-SWTF-brightgreen)](https://github.com/the-art-of-dev/swtf)
+
+<img src="logo.jpg" width="600px">
 
 _Website development made easy_
 
 ## Table of content
 
-- [🐢 tortue-js /tɔʁ.ty/](#-tortue-js-tɔʁty)
+- [Tortue /tɔʁ.ty/](#tortue-tɔʁty)
   - [Table of content](#table-of-content)
   - [Concepts](#concepts)
   - [Quick start](#quick-start)
