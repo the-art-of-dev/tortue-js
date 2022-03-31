@@ -68,6 +68,12 @@ Install tortue globally:
 npm i -g tortue
 ```
 
+For help run:
+
+```
+tortue -h
+```
+
 Create new project:
 
 ```
