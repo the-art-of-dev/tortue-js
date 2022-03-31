@@ -44,7 +44,8 @@ _Website development made easy_
       - [Export process](#export-process)
       - [Watch process](#watch-process)
     - [Shell](#shell)
-    - [CLI App](#cli-app)
+      - [Definition](#definition-5)
+      - [Representation](#representation-4)
   - [Contributors](#contributors)
   - [Sponsors](#sponsors)
 
@@ -237,9 +238,9 @@ Every action is callback that receives `data` and can interact with it and chang
 
 ```ts
 export interface TortueShellActionData {
-  registry?: ComponentRegistry;
-  pages?: Page[];
-  layouts?: Layout[];
+  registry: ComponentRegistry;
+  pages: Page[];
+  layouts: Layout[];
   config: TortueConfig;
 }
 ```
@@ -694,6 +695,8 @@ Watch process uses export pipeline to ease a website development process by runn
 
 ---
 
+#### Definition
+
 Tortue Shell is a plugin system around Tortue Pipeline. Every Shell is consisted of:
 
 - Name
@@ -701,9 +704,31 @@ Tortue Shell is a plugin system around Tortue Pipeline. Every Shell is consisted
 
 Actions are callbacks that can process and change tortue data every time pipeline finds in a state that represent an action name.
 
----
+#### Representation
 
-### CLI App
+In code we can represent tortue shell through the interface (js like pseudo code):
+
+```ts
+interface ActionData {
+  registry: ComponentRegistry;
+  pages: Page[];
+  layouts: Layout[];
+  config: TortueConfig;
+}
+
+interface TortueShell {
+  name: string;
+  actions: {
+    configLoaded: (data: ActionData) => Promise<ActionData>;
+    componentsBuilt: (data: ActionData) => Promise<ActionData>;
+    layoutsBuilt: (data: ActionData) => Promise<ActionData>;
+    pagesBuilt: (data: ActionData) => Promise<ActionData>;
+    renderFinished: (data: ActionData) => Promise<TortueShellActionData>;
+  };
+}
+```
+
+---
 
 ---
 
