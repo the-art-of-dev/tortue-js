@@ -561,7 +561,7 @@ _layout.html_
 `{{{head}}}` represents place where pages `<head>` tag will be included.
 `{{{content}}}` represents place where pages `<body>` tag will be included.
 
-> NOTICE: Props are rendered using Mustache templating engine.
+> NOTICE: Layouts are rendered using Mustache templating engine.
 
 ---
 
