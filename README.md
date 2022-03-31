@@ -57,7 +57,7 @@ _Website development made easy_
 
 ## System requirements
 
-The following software should be installed on yout system and added to `PATH` env variable.
+The following software should be installed on your system and added to the `PATH` environment variable.
 
 - Node.js v14 or higher (https://nodejs.org/en/)
 - npm (https://www.npmjs.com/package/npm)
