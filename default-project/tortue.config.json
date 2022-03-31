@@ -1,0 +1,19 @@
+{
+  "componentsDir": "components",
+  "layoutsDir": "layouts",
+  "pagesDir": "pages",
+  "shellsConfig": [
+    {
+      "name": "intellisense-vsc"
+    },
+    {
+      "name": "export-assets"
+    },
+    {
+      "name": "export-html"
+    },
+    {
+      "name": "live-server"
+    }
+  ]
+}

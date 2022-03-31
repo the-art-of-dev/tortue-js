@@ -1,0 +1,5 @@
+.DS_Store
+dist
+wp-dist
+node_modules
+reports

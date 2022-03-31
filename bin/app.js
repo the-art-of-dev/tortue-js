@@ -10,6 +10,7 @@ var Mustache = require('mustache');
 var liveServer = require('live-server');
 var chalk = require('chalk');
 var simpleGit = require('simple-git');
+var fs$8 = require('fs-extra');
 var chokidar = require('chokidar');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -20,6 +21,7 @@ var Mustache__default = /*#__PURE__*/_interopDefaultLegacy(Mustache);
 var liveServer__default = /*#__PURE__*/_interopDefaultLegacy(liveServer);
 var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
 var simpleGit__default = /*#__PURE__*/_interopDefaultLegacy(simpleGit);
+var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs$8);
 var chokidar__default = /*#__PURE__*/_interopDefaultLegacy(chokidar);
 
 /*! *****************************************************************************
@@ -120,7 +122,7 @@ class ContextTree {
     }
 }
 
-const fs$8 = {
+const fs$7 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -136,7 +138,7 @@ const mapDirToContext = (parent, d) => {
         path: path__default["default"].resolve(parent.path, d),
     };
 };
-const readContextDirs = (c) => __awaiter(void 0, void 0, void 0, function* () { return fs$8.readdir(path__default["default"].resolve(c.path)); });
+const readContextDirs = (c) => __awaiter(void 0, void 0, void 0, function* () { return fs$7.readdir(path__default["default"].resolve(c.path)); });
 //Default Builder implementation
 class ContextTreeBuilder {
     constructor(contextsRoot) {
@@ -205,7 +207,7 @@ class MapComponentRegistry {
     }
 }
 
-const fs$7 = {
+const fs$6 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -228,28 +230,28 @@ class ComponentBuilder {
         return __awaiter(this, void 0, void 0, function* () {
             const htmlPath = path__default["default"].resolve(componentDir, "index.html");
             const isHtml = fsSync__default["default"].existsSync(htmlPath);
-            return isHtml ? (yield fs$7.readFile(htmlPath)).toString() : null;
+            return isHtml ? (yield fs$6.readFile(htmlPath)).toString() : null;
         });
     }
     buildComponentCss(componentDir) {
         return __awaiter(this, void 0, void 0, function* () {
             const cssPath = path__default["default"].resolve(componentDir, "style.css");
             const isCss = fsSync__default["default"].existsSync(cssPath);
-            return isCss ? (yield fs$7.readFile(cssPath)).toString() : null;
+            return isCss ? (yield fs$6.readFile(cssPath)).toString() : null;
         });
     }
     buildComponentJs(componentDir) {
         return __awaiter(this, void 0, void 0, function* () {
             const jsPath = path__default["default"].resolve(componentDir, "script.js");
             const isJs = fsSync__default["default"].existsSync(jsPath);
-            return isJs ? (yield fs$7.readFile(jsPath)).toString() : null;
+            return isJs ? (yield fs$6.readFile(jsPath)).toString() : null;
         });
     }
     buildComponentDoc(componentDir) {
         return __awaiter(this, void 0, void 0, function* () {
             const docPath = path__default["default"].resolve(componentDir, "doc.md");
             const isDoc = fsSync__default["default"].existsSync(docPath);
-            return isDoc ? (yield fs$7.readFile(docPath)).toString() : null;
+            return isDoc ? (yield fs$6.readFile(docPath)).toString() : null;
         });
     }
     buildAllComponentParts(componentDir) {
@@ -354,7 +356,7 @@ class ComponentRegisterRendererJSDOM {
     }
 }
 
-const fs$6 = {
+const fs$5 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -386,7 +388,7 @@ class LayoutBuilder {
             if (fsSync__default["default"].existsSync(layoutPath)) {
                 return {
                     name: context.name,
-                    html: (yield fs$6.readFile(layoutPath)).toString(),
+                    html: (yield fs$5.readFile(layoutPath)).toString(),
                 };
             }
             return null;
@@ -406,7 +408,7 @@ class LayoutBuilder {
     }
 }
 
-const fs$5 = {
+const fs$4 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -436,9 +438,9 @@ class PageBuilder {
                 return null;
             const page = {
                 name: context.name,
-                html: isHtml ? (yield fs$5.readFile(htmlPath)).toString() : null,
-                css: isJs ? (yield fs$5.readFile(cssPath)).toString() : null,
-                js: isCss ? (yield fs$5.readFile(jsPath)).toString() : null,
+                html: isHtml ? (yield fs$4.readFile(htmlPath)).toString() : null,
+                css: isJs ? (yield fs$4.readFile(cssPath)).toString() : null,
+                js: isCss ? (yield fs$4.readFile(jsPath)).toString() : null,
             };
             return Promise.resolve(page);
         });
@@ -521,7 +523,7 @@ function renderPage(page, registry, layout) {
     return renderedPage;
 }
 
-const fs$4 = {
+const fs$3 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -537,19 +539,19 @@ const exportHTML = {
             const exportDir = (_a = args === null || args === void 0 ? void 0 : args.exportDir) !== null && _a !== void 0 ? _a : "dist-html";
             const exportDirPath = path__default["default"].resolve(exportDir);
             if (!fsSync__default["default"].existsSync(exportDirPath)) {
-                yield fs$4.mkdir(exportDirPath, {
+                yield fs$3.mkdir(exportDirPath, {
                     recursive: true,
                 });
             }
             for (const page of data.pages) {
-                yield fs$4.writeFile(path__default["default"].resolve(exportDirPath, `${page.name}.html`), page.html);
+                yield fs$3.writeFile(path__default["default"].resolve(exportDirPath, `${page.name}.html`), page.html);
             }
             return data;
         }),
     },
 };
 
-const fs$3 = {
+const fs$2 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -565,14 +567,14 @@ const exportAssets = {
             const exportDir = (_a = args === null || args === void 0 ? void 0 : args.exportDir) !== null && _a !== void 0 ? _a : "assets";
             const exportDirPath = path__default["default"].resolve(exportDir);
             if (!fsSync__default["default"].existsSync(exportDirPath)) {
-                yield fs$3.mkdir(exportDirPath, {
+                yield fs$2.mkdir(exportDirPath, {
                     recursive: true,
                 });
             }
-            yield fs$3.mkdir(path__default["default"].resolve(exportDirPath, "css"), {
+            yield fs$2.mkdir(path__default["default"].resolve(exportDirPath, "css"), {
                 recursive: true,
             });
-            yield fs$3.mkdir(path__default["default"].resolve(exportDirPath, "js"), {
+            yield fs$2.mkdir(path__default["default"].resolve(exportDirPath, "js"), {
                 recursive: true,
             });
             for (const page of data.pages) {
@@ -580,14 +582,14 @@ const exportAssets = {
                     continue;
                 const dom = new jsdom.JSDOM(page.html);
                 if (page.css) {
-                    yield fs$3.writeFile(path__default["default"].resolve(exportDirPath, "css", `${page.name}.css`), page.css);
+                    yield fs$2.writeFile(path__default["default"].resolve(exportDirPath, "css", `${page.name}.css`), page.css);
                     const styleLink = dom.window.document.createElement("link");
                     styleLink.rel = "stylesheet";
                     styleLink.href = `/assets/css/${page.name}.css`;
                     dom.window.document.head.appendChild(styleLink);
                 }
                 if (page.js) {
-                    yield fs$3.writeFile(path__default["default"].resolve(exportDirPath, "js", `${page.name}.js`), page.js);
+                    yield fs$2.writeFile(path__default["default"].resolve(exportDirPath, "js", `${page.name}.js`), page.js);
                     const scriptTag = dom.window.document.createElement("script");
                     scriptTag.src = `/assets/js/${page.name}.js`;
                     dom.window.document.body.appendChild(scriptTag);
@@ -599,7 +601,7 @@ const exportAssets = {
     },
 };
 
-const fs$2 = {
+const fs$1 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -619,7 +621,7 @@ const intellisenseVSC = {
                     description: comp.doc,
                 });
             }
-            yield fs$2.writeFile("components-html-custom-data.json", JSON.stringify(htmlCstomData));
+            yield fs$1.writeFile("components-html-custom-data.json", JSON.stringify(htmlCstomData));
             return data;
         }),
     },
@@ -713,7 +715,7 @@ function findPageLayout(pageName, layouts) {
     return null;
 }
 
-const fs$1 = {
+const fs = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -733,7 +735,7 @@ class Tortue {
             configPath = path__default["default"].resolve(configPath);
             if (!fsSync__default["default"].existsSync(configPath))
                 return null;
-            const config = JSON.parse((yield fs$1.readFile(configPath)).toString());
+            const config = JSON.parse((yield fs.readFile(configPath)).toString());
             return config;
         });
     }
@@ -921,11 +923,6 @@ class ExportCommand extends commander.Command {
     }
 }
 
-const fs = {
-    readFile: util.promisify(fsSync__default["default"].readFile),
-    writeFile: util.promisify(fsSync__default["default"].writeFile),
-    mkdir: util.promisify(fsSync__default["default"].mkdir),
-};
 const log$1 = console.log;
 const logErr = (...text) => {
     log$1(chalk__default["default"].red("[!]", ...text));
@@ -939,8 +936,10 @@ class NewCommand extends commander.Command {
      */
     constructor() {
         super("new");
-        this.argument("[name]", "New project name", "");
+        this.description("Creates new tortue default project setup");
+        this.argument("[name]", "New project name(blank if new project is current directory)", "");
         this.action(this._action);
+        this.option("-f --force", "Overwrites existing project setup if exists");
     }
     _initGitRepo(repoPath) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -949,154 +948,30 @@ class NewCommand extends commander.Command {
             const git = simpleGit__default["default"](repoPath);
             yield git.init();
             yield git.checkout(["-b", "main"]);
-            const readmePath = path__default["default"].resolve(repoPath, "README.md");
-            yield fs.writeFile(readmePath, `# ${path__default["default"].basename(repoPath)}` + "\n");
-            const gitignoreTemplate = `.DS_Store
-dist
-node_modules
-reports
-components-html-custom-data.json
-dist-*
-`;
-            const gitignorePath = path__default["default"].resolve(repoPath, ".gitignore");
-            yield fs.writeFile(gitignorePath, gitignoreTemplate);
         });
     }
-    _createProjectDir(repoPath) {
+    _initProjectFileStructure(repoPath, overwrite) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (fsSync__default["default"].existsSync(repoPath))
-                return false;
-            yield fs.mkdir(repoPath, {
+            yield fs__default["default"].copy(path__default["default"].resolve(__dirname, "..", "default-project"), path__default["default"].resolve(repoPath), {
                 recursive: true,
-            });
-            return true;
-        });
-    }
-    _createPackageJSON(repoPath) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const porjectName = path__default["default"].basename(repoPath);
-            const packageJSONTemplate = `{
-  "name": "${porjectName}",
-  "version": "1.0.0",
-  "description": "${porjectName} Project",
-  "main": "index.js",
-  "scripts": {
-    "build": "tortue export -c tortue.config.json",
-    "dev": "tortue watch -c tortue.config.json"
-  },
-  "devDependencies": {
-    "prettier": "2.5.1",
-    "tortue": "^1.0.0"
-  }
-}
-`;
-            yield fs.writeFile(path__default["default"].resolve(repoPath, "package.json"), packageJSONTemplate);
-        });
-    }
-    _createVSCodeSettings(repoPath) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield fs.mkdir(path__default["default"].resolve(repoPath, ".vscode"), {
-                recursive: true,
-            });
-            const settingsJSONTemplate = `{
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "[html]": {
-    "editor.suggest.insertMode": "replace",
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true
-  }
-}
-`;
-            yield fs.writeFile(path__default["default"].resolve(repoPath, ".vscode", "settings.json"), settingsJSONTemplate);
-        });
-    }
-    _createPrettierSettings(repoPath) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const prettierTemplate = `{
-  "trailingComma": "all",
-  "tabWidth": 2,
-  "semi": true,
-  "singleQuote": false,
-  "printWidth": 80
-}
-`;
-            yield fs.writeFile(path__default["default"].resolve(repoPath, ".prettierrc.json"), prettierTemplate);
-        });
-    }
-    _createDefaultLayout(repoPath) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield fs.mkdir(path__default["default"].resolve(repoPath, "layouts"), {
-                recursive: true,
-            });
-            const layoutTemplate = `<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-
-  {{head}}
-</head>
-
-<body>
-
-</body>
-
-</html>
-`;
-            yield fs.writeFile(path__default["default"].resolve(repoPath, "layouts", "layout.html"), layoutTemplate);
-        });
-    }
-    _createDefaultTortueConfig(repoPath) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const tortueConfigTemplate = `{
-  "componentsDir": "components",
-  "layoutsDir": "layouts",
-  "pagesDir": "pages",
-  "shellsConfig": [
-    {
-      "name": "intellisense-vsc"
-    },
-    {
-      "name": "export-assets"
-    },
-    {
-      "name": "export-html"
-    }
-  ]
-}    
-`;
-            yield fs.writeFile(path__default["default"].resolve(repoPath, "tortue.config.json"), tortueConfigTemplate);
-        });
-    }
-    _initProjectFileStructure(repoPath) {
-        return __awaiter(this, void 0, void 0, function* () {
-            yield this._createPackageJSON(repoPath);
-            yield this._createVSCodeSettings(repoPath);
-            yield this._createPrettierSettings(repoPath);
-            yield this._createDefaultTortueConfig(repoPath);
-            yield fs.mkdir(path__default["default"].resolve(repoPath, "components"), {
-                recursive: true,
-            });
-            yield this._createDefaultLayout(repoPath);
-            yield fs.mkdir(path__default["default"].resolve(repoPath, "pages"), {
-                recursive: true,
+                errorOnExist: true,
+                overwrite: overwrite,
             });
         });
     }
-    _action(name) {
+    _action(name, opts) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             const newProjectPath = path__default["default"].resolve(".", name);
-            const projectDirCreated = yield this._createProjectDir(newProjectPath);
-            if (!projectDirCreated && name) {
-                logErr("Can't create new directory for your project :'(");
-                logErr("Try removing directory if already exist");
+            const overwrite = (_a = opts.force) !== null && _a !== void 0 ? _a : false;
+            try {
+                yield this._initProjectFileStructure(newProjectPath, overwrite);
+                yield this._initGitRepo(newProjectPath);
+            }
+            catch (error) {
+                logErr(error);
                 return;
             }
-            yield this._initGitRepo(newProjectPath);
-            yield this._initProjectFileStructure(newProjectPath);
             logSuccess$1("Project successfully created ;)");
         });
     }
@@ -1133,16 +1008,6 @@ class WatchCommand extends commander.Command {
                 tortue.config.pagesDir,
             ]);
             logInfo("Watching.....");
-            // logInfo("Starting development server....");
-            // const params: liveServer.LiveServerParams = {
-            //   port: 8081,
-            //   host: "0.0.0.0",
-            //   root: "dist-html",
-            //   wait: 500,
-            //   mount: [["/assets", "./assets"]],
-            //   logLevel: 0,
-            // };
-            // liveServer.start(params);
             let isReady = false;
             watcher.on("ready", () => {
                 if (isReady)

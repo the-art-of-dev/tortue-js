@@ -1,0 +1,16 @@
+{
+  "name": "proj-name",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tortue export -c tortue.config.json",
+    "dev": "tortue watch -c tortue.config.json"
+  },
+  "keywords": [],
+  "author": "",
+  "devDependencies": {
+    "prettier": "2.5.1",
+    "tortue": "^1.0.0"
+  }
+}

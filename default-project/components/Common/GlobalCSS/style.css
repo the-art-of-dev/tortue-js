@@ -1,0 +1,220 @@
+:root {
+  /*             */
+  /* BREAKPOINTS */
+  /*             */
+  --bp-xs: 576px;
+  --bp-s: 768px;
+  --bp-m: 992px;
+  --bp-l: 1200px;
+  --bp-xl: 1400px;
+
+  /*        */
+  /* COLORS */
+  /*        */
+  --white-500: rgb(255, 255, 255);
+  --black-300: rgb(33, 37, 41);
+  --black-500: rgb(0, 0, 0);
+  --gray-300: rgb(237, 237, 237);
+  --gray-500: rgba(0, 0, 0, 0.12);
+  --gray-800: rgb(153, 153, 153);
+  --gray-900: rgb(112, 112, 112);
+  --red-500: rgb(249, 80, 93);
+
+  /*             */
+  /* FONT FAMILY */
+  /*             */
+  font-family: "Poppins";
+
+  /*           */
+  /* FONT SIZE */
+  /*           */
+  --fs-xs: 0.75rem; /* 12px */
+  --fs-s: 0.875rem; /* 14px */
+  --fs-m: 1rem; /* 16px */
+  --fs-l: 1.125rem; /* 18px */
+  --fs-xl: 1.25rem; /* 20px */
+  --fs-2xl: 1.5rem; /* 24px */
+  --fs-3xl: 2.25rem; /* 36px */
+  --fs-4xl: 3rem; /* 48px */
+  --fs-5xl: 4rem; /* 64px */
+  --fs-6xl: 5.25rem; /* 84px */
+  --fs-7xl: 6rem; /* 96px */
+
+  /*             */
+  /* FONT WEIGHT */
+  /*             */
+  --fw-l: 300;
+  --fw-r: 400;
+  --fw-m: 500;
+  --fw-sb: 600;
+  --fw-b: 700;
+
+  /*               */
+  /* BORDER RADIUS */
+  /*               */
+  --br-s: 15px;
+  --br-m: 20px;
+  --br-l: 30px;
+  --br-full: 50%;
+}
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  font-family: "Poppins";
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+/* Set core root defaults */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  overflow-x: hidden;
+}
+
+/* A elements that don't have a class get default styles */
+a:not([class]) {
+  text-decoration-skip-ink: auto;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+a,
+a:hover {
+  text-decoration: none !important;
+}
+
+iframe {
+  display: block;
+}
+
+button {
+  border: none;
+}
+
+/* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.heading1 {
+  font-weight: var(--fw-b);
+  font-size: var(--fs-5xl);
+}
+
+.heading2 {
+  font-weight: var(--fw-l);
+  font-size: var(--fs-4xl);
+  margin-bottom: 1.5rem;
+}
+.heading2 > span {
+  font-weight: var(--fw-b);
+}
+
+.subtext {
+  color: var(--gray-300);
+  font-weight: var(--fw-r);
+  font-size: var(--fs-s);
+}
+
+.main-button {
+  font-size: var(--fs-l);
+  font-weight: var(--fw-m);
+  color: var(--white-500);
+  background-color: var(--red-500);
+  border-radius: var(--br-s);
+  width: 213px;
+  height: 45px;
+  padding: 0.5rem;
+}
+
+.second-button {
+  font-size: 18px;
+  font-weight: var(--fw-m);
+  color: var(--black-500);
+  background-color: var(--white-500);
+  border-radius: var(--br-s);
+  width: 213px;
+  height: 45px;
+  padding: 0.5rem;
+}
+
+.accordion-button::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23fff'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E") !important;
+  margin-left: 0.5rem !important;
+}
+
+.section-padding-h-l {
+  padding-block: 6rem;
+}
+.section-padding-h-m {
+  padding-block: 3rem;
+}
+
+p {
+  font-weight: var(--fw-l);
+}
+
+input {
+  height: 45px;
+  background-color: transparent;
+  border: 0.5px solid var(--white-500);
+  border-radius: var(--br-s);
+}
