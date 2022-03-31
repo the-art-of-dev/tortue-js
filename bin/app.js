@@ -506,7 +506,7 @@ function renderLayoutToHTML(page, layout) {
     return html;
 }
 function renderPage(page, registry, layout) {
-    var _a, _b;
+    var _a, _b, _c, _d;
     const crr = new ComponentRegisterRendererJSDOM(registry);
     const dom = new jsdom.JSDOM(renderLayoutToHTML(page, layout));
     const dependecyList = new Set();
@@ -520,6 +520,8 @@ function renderPage(page, registry, layout) {
         css += (_a = registry.getComponent(dep).css) !== null && _a !== void 0 ? _a : "";
         js += (_b = registry.getComponent(dep).js) !== null && _b !== void 0 ? _b : "";
     }
+    css += (_c = page.css) !== null && _c !== void 0 ? _c : "";
+    js += (_d = page.js) !== null && _d !== void 0 ? _d : "";
     renderedPage.html = dom.window.document.documentElement.outerHTML;
     renderedPage.css = css;
     renderedPage.js = js;
@@ -1088,6 +1090,8 @@ class NewCommand extends commander.Command {
             });
             const packageJSON = yield fs__default["default"].readJSON(path__default["default"].resolve(repoPath, "package.json"));
             packageJSON.name = projectName;
+            const tortuePackageJSON = yield fs__default["default"].readJson(path__default["default"].resolve(__dirname, "..", "package.json"));
+            packageJSON.devDependencies.tortue = `^${tortuePackageJSON.version}`;
             yield fs__default["default"].writeJson(path__default["default"].resolve(repoPath, "package.json"), packageJSON, {
                 spaces: 2,
             });
