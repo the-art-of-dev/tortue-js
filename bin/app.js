@@ -544,7 +544,8 @@ const exportHTML = {
                 });
             }
             for (const page of data.pages) {
-                yield fs$3.writeFile(path__default["default"].resolve(exportDirPath, `${page.name}.html`), page.html);
+                const name = yield page.name.toLowerCase();
+                yield fs$3.writeFile(path__default["default"].resolve(exportDirPath, `${name}.html`), page.html);
             }
             return data;
         }),
@@ -581,17 +582,20 @@ const exportAssets = {
                 if (!page.css && !page.js)
                     continue;
                 const dom = new jsdom.JSDOM(page.html);
+                const name = page.name.toLowerCase();
                 if (page.css) {
-                    yield fs$2.writeFile(path__default["default"].resolve(exportDirPath, "css", `${page.name}.css`), page.css);
+                    yield fs$2.writeFile(path__default["default"].resolve(exportDirPath, "css", `${name}.css`), page.css);
                     const styleLink = dom.window.document.createElement("link");
                     styleLink.rel = "stylesheet";
-                    styleLink.href = `/assets/css/${page.name}.css`;
+                    styleLink.type = "text/css";
+                    styleLink.href = `/assets/css/${name}.css`;
                     dom.window.document.head.appendChild(styleLink);
                 }
                 if (page.js) {
-                    yield fs$2.writeFile(path__default["default"].resolve(exportDirPath, "js", `${page.name}.js`), page.js);
+                    yield fs$2.writeFile(path__default["default"].resolve(exportDirPath, "js", `${name}.js`), page.js);
                     const scriptTag = dom.window.document.createElement("script");
-                    scriptTag.src = `/assets/js/${page.name}.js`;
+                    scriptTag.type = "text/javascript";
+                    scriptTag.src = `/assets/js/${name}.js`;
                     dom.window.document.body.appendChild(scriptTag);
                 }
                 page.html = dom.window.document.documentElement.outerHTML;
@@ -952,10 +956,16 @@ class NewCommand extends commander.Command {
     }
     _initProjectFileStructure(repoPath, overwrite) {
         return __awaiter(this, void 0, void 0, function* () {
+            const projectName = path__default["default"].basename(repoPath);
             yield fs__default["default"].copy(path__default["default"].resolve(__dirname, "..", "default-project"), path__default["default"].resolve(repoPath), {
                 recursive: true,
                 errorOnExist: true,
                 overwrite: overwrite,
+            });
+            const packageJSON = yield fs__default["default"].readJSON(path__default["default"].resolve(repoPath, "package.json"));
+            packageJSON.name = projectName;
+            yield fs__default["default"].writeJson(path__default["default"].resolve(repoPath, "package.json"), packageJSON, {
+                spaces: 2,
             });
         });
     }

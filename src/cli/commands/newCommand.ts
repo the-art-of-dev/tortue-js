@@ -49,6 +49,8 @@ export class NewCommand extends Command {
     repoPath: string,
     overwrite: boolean,
   ): Promise<void> {
+    const projectName = path.basename(repoPath);
+
     await fs.copy(
       path.resolve(__dirname, "..", "default-project"),
       path.resolve(repoPath),
@@ -58,6 +60,16 @@ export class NewCommand extends Command {
         overwrite: overwrite,
       },
     );
+
+    const packageJSON = await fs.readJSON(
+      path.resolve(repoPath, "package.json"),
+    );
+
+    packageJSON.name = projectName;
+
+    await fs.writeJson(path.resolve(repoPath, "package.json"), packageJSON, {
+      spaces: 2,
+    });
   }
 
   private async _action(name: string, opts: NewCommandOptions): Promise<void> {
