@@ -43,27 +43,30 @@ const exportAssets: TortueShell = {
       for (const page of data.pages) {
         if (!page.css && !page.js) continue;
         const dom = new JSDOM(page.html);
+        const name = page.name.toLowerCase();
 
         if (page.css) {
           await fs.writeFile(
-            path.resolve(exportDirPath, "css", `${page.name}.css`),
+            path.resolve(exportDirPath, "css", `${name}.css`),
             page.css,
           );
 
           const styleLink = dom.window.document.createElement("link");
           styleLink.rel = "stylesheet";
-          styleLink.href = `/assets/css/${page.name}.css`;
+          styleLink.type = "text/css";
+          styleLink.href = `/assets/css/${name}.css`;
           dom.window.document.head.appendChild(styleLink);
         }
 
         if (page.js) {
           await fs.writeFile(
-            path.resolve(exportDirPath, "js", `${page.name}.js`),
+            path.resolve(exportDirPath, "js", `${name}.js`),
             page.js,
           );
 
           const scriptTag = dom.window.document.createElement("script");
-          scriptTag.src = `/assets/js/${page.name}.js`;
+          scriptTag.type = "text/javascript";
+          scriptTag.src = `/assets/js/${name}.js`;
           dom.window.document.body.appendChild(scriptTag);
         }
 

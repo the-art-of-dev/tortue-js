@@ -32,8 +32,10 @@ const exportHTML: TortueShell = {
       }
 
       for (const page of data.pages) {
+        const name = await page.name.toLowerCase();
+
         await fs.writeFile(
-          path.resolve(exportDirPath, `${page.name}.html`),
+          path.resolve(exportDirPath, `${name}.html`),
           page.html,
         );
       }
