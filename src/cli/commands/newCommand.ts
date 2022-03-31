@@ -69,7 +69,7 @@ export class NewCommand extends Command {
     const tortuePackageJSON = await fs.readJson(
       path.resolve(__dirname, "..", "package.json"),
     );
-    packageJSON.devDependecies.tortue = `^${tortuePackageJSON.version}`;
+    packageJSON.devDependencies.tortue = `^${tortuePackageJSON.version}`;
 
     await fs.writeJson(path.resolve(repoPath, "package.json"), packageJSON, {
       spaces: 2,
