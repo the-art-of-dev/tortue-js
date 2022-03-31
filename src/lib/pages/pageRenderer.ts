@@ -90,6 +90,9 @@ export function renderPage(
     js += registry.getComponent(dep).js ?? "";
   }
 
+  css += page.css ?? "";
+  js += page.js ?? "";
+
   renderedPage.html = dom.window.document.documentElement.outerHTML;
   renderedPage.css = css;
   renderedPage.js = js;
