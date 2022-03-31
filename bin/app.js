@@ -632,9 +632,9 @@ const intellisenseVSC = {
     },
 };
 
-const log$2 = console.log;
+const log$3 = console.log;
 const logInfo$1 = (...text) => {
-    log$2(chalk__default["default"].white("[*]", ...text));
+    log$3(chalk__default["default"].white("[*]", ...text));
 };
 let isRunning = false;
 const liveServerShell = {
@@ -1051,12 +1051,12 @@ class ExportCommand extends commander.Command {
     }
 }
 
-const log$1 = console.log;
-const logErr = (...text) => {
-    log$1(chalk__default["default"].red("[!]", ...text));
+const log$2 = console.log;
+const logErr$1 = (...text) => {
+    log$2(chalk__default["default"].red("[!]", ...text));
 };
 const logSuccess$1 = (...text) => {
-    log$1(chalk__default["default"].green("[+]", ...text));
+    log$2(chalk__default["default"].green("[+]", ...text));
 };
 class NewCommand extends commander.Command {
     /**
@@ -1103,7 +1103,7 @@ class NewCommand extends commander.Command {
                 yield this._initGitRepo(newProjectPath);
             }
             catch (error) {
-                logErr(error);
+                logErr$1(error);
                 return;
             }
             logSuccess$1("Project successfully created ;)");
@@ -1111,12 +1111,12 @@ class NewCommand extends commander.Command {
     }
 }
 
-const log = console.log;
+const log$1 = console.log;
 const logInfo = (...text) => {
-    log(chalk__default["default"].white("[*]", ...text));
+    log$1(chalk__default["default"].white("[*]", ...text));
 };
 const logSuccess = (...text) => {
-    log(chalk__default["default"].green("[+]", ...text));
+    log$1(chalk__default["default"].green("[+]", ...text));
 };
 class WatchCommand extends commander.Command {
     /**
@@ -1125,7 +1125,7 @@ class WatchCommand extends commander.Command {
      */
     constructor() {
         super("watch");
-        this.description("Runs tortue watch on components, layouts and pages");
+        this.description("Runs tortue export pipeline when components, layouts or pages change");
         this.option("-c --config <path>", "Specify configuration path");
         this.action(this._action);
     }
@@ -1156,6 +1156,91 @@ class WatchCommand extends commander.Command {
     }
 }
 
+const log = console.log;
+const logErr = (...text) => {
+    log(chalk__default["default"].red("[!]", ...text));
+};
+var TemplateType;
+(function (TemplateType) {
+    TemplateType["component"] = "comp";
+    TemplateType["page"] = "page";
+})(TemplateType || (TemplateType = {}));
+function getTemplatePath(type) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const templatePath = path__default["default"].resolve(__dirname, "..", "templates", type);
+        if (!fs__default["default"].existsSync(templatePath))
+            throw new Error("Template directory not found!");
+        return templatePath;
+    });
+}
+function createFromTemplate(type, name, includeFiles, //template parts
+outputRoot) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const templatePath = yield getTemplatePath(type);
+        const outputPath = path__default["default"].resolve(outputRoot, name.split("-").join(path__default["default"].sep));
+        yield fs__default["default"].mkdirp(outputPath);
+        yield fs__default["default"].copy(templatePath, outputPath, {
+            recursive: true,
+            overwrite: false,
+            filter: (x) => includeFiles.includes(path__default["default"].basename(x)),
+        });
+        for (const fileName of includeFiles) {
+            if (fileName == type)
+                continue;
+            const filePath = path__default["default"].resolve(outputPath, fileName);
+            if (!fs__default["default"].existsSync(filePath))
+                continue;
+            let content = (yield fs__default["default"].readFile(filePath)).toString();
+            content = Mustache__default["default"].render(content, {
+                name: name.toLowerCase(),
+            });
+            yield fs__default["default"].writeFile(filePath, content);
+        }
+    });
+}
+class CreateCommand extends commander.Command {
+    /**
+     * Create command helps you create components, pages based on templates
+     */
+    constructor() {
+        super("create");
+        this.description("Create command helps you create components, pages");
+        this.argument("<type>", "Template type: comp | page");
+        this.argument("<name>", "");
+        this.option("-c --config <path>", "Specify configuration path");
+        this.option("-s --style", "Creates style from template");
+        this.option("-j --js", "Creates script from template");
+        this.option("-d --doc", "Creates documentation from template");
+        this.action(this._action);
+    }
+    _action(type, name, opts) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const tortue = new Tortue(opts.config);
+            yield tortue.loadConfig();
+            const outputRoot = {
+                [TemplateType.component]: tortue.config.componentsDir,
+                [TemplateType.page]: tortue.config.pagesDir,
+            };
+            const includeFiles = [type, "index.html"];
+            if (opts === null || opts === void 0 ? void 0 : opts.style) {
+                includeFiles.push("style.css");
+            }
+            if (opts === null || opts === void 0 ? void 0 : opts.js) {
+                includeFiles.push("script.js");
+            }
+            if ((opts === null || opts === void 0 ? void 0 : opts.doc) && type == TemplateType.component) {
+                includeFiles.push("doc.md");
+            }
+            try {
+                yield createFromTemplate(type, name, includeFiles, outputRoot[type]);
+            }
+            catch (error) {
+                logErr(error);
+            }
+        });
+    }
+}
+
 class TortueCLIApp {
     /**
      * CLI provides export, import and watch commands.
@@ -1165,9 +1250,11 @@ class TortueCLIApp {
         this._exportCommand = new ExportCommand();
         this._importCommand = new NewCommand();
         this._watchCommand = new WatchCommand();
+        this._createCommand = new CreateCommand();
         this._program.addCommand(this._exportCommand);
         this._program.addCommand(this._importCommand);
         this._program.addCommand(this._watchCommand);
+        this._program.addCommand(this._createCommand);
     }
     parseOptions() {
         this._program.parse();

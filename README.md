@@ -13,6 +13,7 @@ _Website development made easy_
 
 - [Tortue /tɔʁ.ty/](#tortue-tɔʁty)
   - [Table of content](#table-of-content)
+  - [System requirements](#system-requirements)
   - [Concepts](#concepts)
   - [Quick start](#quick-start)
   - [Tortue processes](#tortue-processes)
@@ -49,6 +50,18 @@ _Website development made easy_
       - [Representation](#representation-4)
   - [Contributors](#contributors)
   - [Sponsors](#sponsors)
+
+---
+
+---
+
+## System requirements
+
+The following software should be installed on yout system and added to `PATH` env variable.
+
+- Node.js v14 or higher (https://nodejs.org/en/)
+- npm (https://www.npmjs.com/package/npm)
+- git (https://git-scm.com/downloads)
 
 ---
 
@@ -94,6 +107,12 @@ Run production build after finishing development:
 
 ```
 npm run build
+```
+
+Install tortue locally:
+
+```
+npm i -D tortue
 ```
 
 ---
@@ -724,7 +743,7 @@ interface TortueShell {
     componentsBuilt: (data: ActionData) => Promise<ActionData>;
     layoutsBuilt: (data: ActionData) => Promise<ActionData>;
     pagesBuilt: (data: ActionData) => Promise<ActionData>;
-    renderFinished: (data: ActionData) => Promise<TortueShellActionData>;
+    renderFinished: (data: ActionData) => Promise<ActionData>;
   };
 }
 ```

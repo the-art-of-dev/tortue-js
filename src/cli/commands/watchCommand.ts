@@ -25,7 +25,9 @@ export class WatchCommand extends Command {
    */
   constructor() {
     super("watch");
-    this.description("Runs tortue watch on components, layouts and pages");
+    this.description(
+      "Runs tortue export pipeline when components, layouts or pages change",
+    );
     this.option("-c --config <path>", "Specify configuration path");
 
     this.action(this._action);
