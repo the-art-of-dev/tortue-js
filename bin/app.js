@@ -7,10 +7,12 @@ var fsSync = require('fs');
 var util = require('util');
 var jsdom = require('jsdom');
 var Mustache = require('mustache');
+var fs$6 = require('fs-extra');
+var CleanCSS = require('clean-css');
+var terser = require('terser');
 var liveServer = require('live-server');
 var chalk = require('chalk');
 var simpleGit = require('simple-git');
-var fs$8 = require('fs-extra');
 var chokidar = require('chokidar');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -18,10 +20,11 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
 var fsSync__default = /*#__PURE__*/_interopDefaultLegacy(fsSync);
 var Mustache__default = /*#__PURE__*/_interopDefaultLegacy(Mustache);
+var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs$6);
+var CleanCSS__default = /*#__PURE__*/_interopDefaultLegacy(CleanCSS);
 var liveServer__default = /*#__PURE__*/_interopDefaultLegacy(liveServer);
 var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
 var simpleGit__default = /*#__PURE__*/_interopDefaultLegacy(simpleGit);
-var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs$8);
 var chokidar__default = /*#__PURE__*/_interopDefaultLegacy(chokidar);
 
 /*! *****************************************************************************
@@ -122,7 +125,7 @@ class ContextTree {
     }
 }
 
-const fs$7 = {
+const fs$5 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -138,7 +141,7 @@ const mapDirToContext = (parent, d) => {
         path: path__default["default"].resolve(parent.path, d),
     };
 };
-const readContextDirs = (c) => __awaiter(void 0, void 0, void 0, function* () { return fs$7.readdir(path__default["default"].resolve(c.path)); });
+const readContextDirs = (c) => __awaiter(void 0, void 0, void 0, function* () { return fs$5.readdir(path__default["default"].resolve(c.path)); });
 //Default Builder implementation
 class ContextTreeBuilder {
     constructor(contextsRoot) {
@@ -207,7 +210,7 @@ class MapComponentRegistry {
     }
 }
 
-const fs$6 = {
+const fs$4 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -230,28 +233,28 @@ class ComponentBuilder {
         return __awaiter(this, void 0, void 0, function* () {
             const htmlPath = path__default["default"].resolve(componentDir, "index.html");
             const isHtml = fsSync__default["default"].existsSync(htmlPath);
-            return isHtml ? (yield fs$6.readFile(htmlPath)).toString() : null;
+            return isHtml ? (yield fs$4.readFile(htmlPath)).toString() : null;
         });
     }
     buildComponentCss(componentDir) {
         return __awaiter(this, void 0, void 0, function* () {
             const cssPath = path__default["default"].resolve(componentDir, "style.css");
             const isCss = fsSync__default["default"].existsSync(cssPath);
-            return isCss ? (yield fs$6.readFile(cssPath)).toString() : null;
+            return isCss ? (yield fs$4.readFile(cssPath)).toString() : null;
         });
     }
     buildComponentJs(componentDir) {
         return __awaiter(this, void 0, void 0, function* () {
             const jsPath = path__default["default"].resolve(componentDir, "script.js");
             const isJs = fsSync__default["default"].existsSync(jsPath);
-            return isJs ? (yield fs$6.readFile(jsPath)).toString() : null;
+            return isJs ? (yield fs$4.readFile(jsPath)).toString() : null;
         });
     }
     buildComponentDoc(componentDir) {
         return __awaiter(this, void 0, void 0, function* () {
             const docPath = path__default["default"].resolve(componentDir, "doc.md");
             const isDoc = fsSync__default["default"].existsSync(docPath);
-            return isDoc ? (yield fs$6.readFile(docPath)).toString() : null;
+            return isDoc ? (yield fs$4.readFile(docPath)).toString() : null;
         });
     }
     buildAllComponentParts(componentDir) {
@@ -356,7 +359,7 @@ class ComponentRegisterRendererJSDOM {
     }
 }
 
-const fs$5 = {
+const fs$3 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -388,7 +391,7 @@ class LayoutBuilder {
             if (fsSync__default["default"].existsSync(layoutPath)) {
                 return {
                     name: context.name,
-                    html: (yield fs$5.readFile(layoutPath)).toString(),
+                    html: (yield fs$3.readFile(layoutPath)).toString(),
                 };
             }
             return null;
@@ -408,7 +411,7 @@ class LayoutBuilder {
     }
 }
 
-const fs$4 = {
+const fs$2 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -438,9 +441,9 @@ class PageBuilder {
                 return null;
             const page = {
                 name: context.name,
-                html: isHtml ? (yield fs$4.readFile(htmlPath)).toString() : null,
-                css: isJs ? (yield fs$4.readFile(cssPath)).toString() : null,
-                js: isCss ? (yield fs$4.readFile(jsPath)).toString() : null,
+                html: isHtml ? (yield fs$2.readFile(htmlPath)).toString() : null,
+                css: isJs ? (yield fs$2.readFile(cssPath)).toString() : null,
+                js: isCss ? (yield fs$2.readFile(jsPath)).toString() : null,
             };
             return Promise.resolve(page);
         });
@@ -523,12 +526,6 @@ function renderPage(page, registry, layout) {
     return renderedPage;
 }
 
-const fs$3 = {
-    readFile: util.promisify(fsSync__default["default"].readFile),
-    writeFile: util.promisify(fsSync__default["default"].writeFile),
-    mkdir: util.promisify(fsSync__default["default"].mkdir),
-    readdir: util.promisify(fsSync__default["default"].readdir),
-};
 const exportHTML = {
     name: "export-html",
     actions: {
@@ -538,26 +535,21 @@ const exportHTML = {
             const args = config === null || config === void 0 ? void 0 : config.args;
             const exportDir = (_a = args === null || args === void 0 ? void 0 : args.exportDir) !== null && _a !== void 0 ? _a : "dist-html";
             const exportDirPath = path__default["default"].resolve(exportDir);
-            if (!fsSync__default["default"].existsSync(exportDirPath)) {
-                yield fs$3.mkdir(exportDirPath, {
-                    recursive: true,
-                });
+            if (fs__default["default"].existsSync(exportDirPath)) {
+                yield fs__default["default"].remove(exportDirPath);
             }
+            yield fs__default["default"].mkdir(exportDirPath, {
+                recursive: true,
+            });
             for (const page of data.pages) {
                 const name = yield page.name.toLowerCase();
-                yield fs$3.writeFile(path__default["default"].resolve(exportDirPath, `${name}.html`), page.html);
+                yield fs__default["default"].writeFile(path__default["default"].resolve(exportDirPath, `${name}.html`), page.html);
             }
             return data;
         }),
     },
 };
 
-const fs$2 = {
-    readFile: util.promisify(fsSync__default["default"].readFile),
-    writeFile: util.promisify(fsSync__default["default"].writeFile),
-    mkdir: util.promisify(fsSync__default["default"].mkdir),
-    readdir: util.promisify(fsSync__default["default"].readdir),
-};
 const exportAssets = {
     name: "export-assets",
     actions: {
@@ -568,14 +560,14 @@ const exportAssets = {
             const exportDir = (_a = args === null || args === void 0 ? void 0 : args.exportDir) !== null && _a !== void 0 ? _a : "assets";
             const exportDirPath = path__default["default"].resolve(exportDir);
             if (!fsSync__default["default"].existsSync(exportDirPath)) {
-                yield fs$2.mkdir(exportDirPath, {
+                yield fs__default["default"].mkdir(exportDirPath, {
                     recursive: true,
                 });
             }
-            yield fs$2.mkdir(path__default["default"].resolve(exportDirPath, "css"), {
+            yield fs__default["default"].mkdir(path__default["default"].resolve(exportDirPath, "css"), {
                 recursive: true,
             });
-            yield fs$2.mkdir(path__default["default"].resolve(exportDirPath, "js"), {
+            yield fs__default["default"].mkdir(path__default["default"].resolve(exportDirPath, "js"), {
                 recursive: true,
             });
             for (const page of data.pages) {
@@ -584,7 +576,13 @@ const exportAssets = {
                 const dom = new jsdom.JSDOM(page.html);
                 const name = page.name.toLowerCase();
                 if (page.css) {
-                    yield fs$2.writeFile(path__default["default"].resolve(exportDirPath, "css", `${name}.css`), page.css);
+                    if (args === null || args === void 0 ? void 0 : args.minify) {
+                        const cc = new CleanCSS__default["default"]({
+                            level: 2,
+                        }).minify(page.css);
+                        page.css = cc.styles;
+                    }
+                    yield fs__default["default"].writeFile(path__default["default"].resolve(exportDirPath, "css", `${name}.css`), page.css);
                     const styleLink = dom.window.document.createElement("link");
                     styleLink.rel = "stylesheet";
                     styleLink.type = "text/css";
@@ -592,7 +590,10 @@ const exportAssets = {
                     dom.window.document.head.appendChild(styleLink);
                 }
                 if (page.js) {
-                    yield fs$2.writeFile(path__default["default"].resolve(exportDirPath, "js", `${name}.js`), page.js);
+                    if (args === null || args === void 0 ? void 0 : args.minify) {
+                        page.js = (yield terser.minify(page.js)).code;
+                    }
+                    yield fs__default["default"].writeFile(path__default["default"].resolve(exportDirPath, "js", `${name}.js`), page.js);
                     const scriptTag = dom.window.document.createElement("script");
                     scriptTag.type = "text/javascript";
                     scriptTag.src = `/assets/js/${name}.js`;

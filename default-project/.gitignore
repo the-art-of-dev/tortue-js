@@ -1,5 +1,7 @@
 .DS_Store
 dist
-wp-dist
+dist-html
 node_modules
 reports
+dist-wp
+components-html-custom-data.json

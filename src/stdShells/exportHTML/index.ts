@@ -1,13 +1,5 @@
 import { TortueShell } from "@lib/tortueShells";
-import fsSync from "fs";
-import { promisify } from "util";
-const fs = {
-  readFile: promisify(fsSync.readFile),
-  writeFile: promisify(fsSync.writeFile),
-  mkdir: promisify(fsSync.mkdir),
-  readdir: promisify(fsSync.readdir),
-};
-
+import fs from "fs-extra";
 import path from "path";
 
 interface ExportHTMLArgs {
@@ -25,11 +17,13 @@ const exportHTML: TortueShell = {
       const exportDir = args?.exportDir ?? "dist-html";
       const exportDirPath = path.resolve(exportDir);
 
-      if (!fsSync.existsSync(exportDirPath)) {
-        await fs.mkdir(exportDirPath, {
-          recursive: true,
-        });
+      if (fs.existsSync(exportDirPath)) {
+        await fs.remove(exportDirPath);
       }
+
+      await fs.mkdir(exportDirPath, {
+        recursive: true,
+      });
 
       for (const page of data.pages) {
         const name = await page.name.toLowerCase();

@@ -1,18 +1,15 @@
 import { TortueShell } from "@lib/tortueShells";
 import fsSync from "fs";
 import { promisify } from "util";
-const fs = {
-  readFile: promisify(fsSync.readFile),
-  writeFile: promisify(fsSync.writeFile),
-  mkdir: promisify(fsSync.mkdir),
-  readdir: promisify(fsSync.readdir),
-};
-
+import fs from "fs-extra";
 import path from "path";
 import { JSDOM } from "jsdom";
+import CleanCSS from "clean-css";
+import { minify } from "terser";
 
 interface ExportAssetsArgs {
-  exportDir: string;
+  exportDir?: string;
+  minify?: boolean;
 }
 
 const exportAssets: TortueShell = {
@@ -46,6 +43,13 @@ const exportAssets: TortueShell = {
         const name = page.name.toLowerCase();
 
         if (page.css) {
+          if (args?.minify) {
+            const cc = new CleanCSS({
+              level: 2,
+            }).minify(page.css);
+            page.css = cc.styles;
+          }
+
           await fs.writeFile(
             path.resolve(exportDirPath, "css", `${name}.css`),
             page.css,
@@ -59,6 +63,10 @@ const exportAssets: TortueShell = {
         }
 
         if (page.js) {
+          if (args?.minify) {
+            page.js = (await minify(page.js)).code;
+          }
+
           await fs.writeFile(
             path.resolve(exportDirPath, "js", `${name}.js`),
             page.js,
