@@ -11,6 +11,9 @@
     },
     {
       "name": "export-html"
+    },
+    {
+      "name": "live-server"
     }
   ]
 }

@@ -29,11 +29,13 @@ export class NewCommand extends Command {
    */
   constructor() {
     super("new");
-    this.argument("<name>", "New project name");
+    this.argument("[name]", "New project name", "");
     this.action(this._action);
   }
 
   private async _initGitRepo(repoPath: string): Promise<void> {
+    if (fsSync.existsSync(path.resolve(repoPath, ".git"))) return;
+
     const git = simpleGit(repoPath);
     await git.init();
     await git.checkout(["-b", "main"]);
@@ -157,18 +159,7 @@ dist-*
     const tortueConfigTemplate = `{
   "componentsDir": "components",
   "layoutsDir": "layouts",
-  "pagesDir": "pages",
-  "shellsConfig": [
-    {
-      "name": "intellisense-vsc"
-    },
-    {
-      "name": "export-assets"
-    },
-    {
-      "name": "export-html"
-    }
-  ]
+  "pagesDir": "pages"
 }    
 `;
 
@@ -199,7 +190,7 @@ dist-*
     const newProjectPath = path.resolve(".", name);
     const projectDirCreated = await this._createProjectDir(newProjectPath);
 
-    if (!projectDirCreated) {
+    if (!projectDirCreated && name) {
       logErr("Can't create new directory for your project :'(");
       logErr("Try removing directory if already exist");
       return;

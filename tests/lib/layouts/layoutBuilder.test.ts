@@ -6,6 +6,5 @@ describe("Layout Builder", () => {
     const builder = new LayoutBuilder(path.resolve("testData", "layouts"));
     const layouts = await builder.buildAll();
     expect(layouts.map((l) => l.name)).toEqual(["Home", ""]);
-    expect(layouts[0].html).toEqual("{{content}}");
   });
 });

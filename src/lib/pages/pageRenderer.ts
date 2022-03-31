@@ -53,13 +53,27 @@ function renderElement(
   depList.add(comp.name);
 }
 
+function renderLayoutToHTML(page: Page, layout: Layout): string {
+  const pageDom = new JSDOM(page.html);
+
+  if (!layout) return pageDom.window.document.documentElement.outerHTML;
+
+  const html = Mustache.render(layout.html, {
+    head: pageDom.window.document.head.innerHTML,
+    content: pageDom.window.document.body.innerHTML,
+  });
+
+  return html;
+}
+
 export function renderPage(
   page: Page,
   registry: ComponentRegistry,
   layout: Layout,
 ): Page {
   const crr = new ComponentRegisterRendererJSDOM(registry);
-  const dom = new JSDOM(layout.html);
+
+  const dom = new JSDOM(renderLayoutToHTML(page, layout));
   const dependecyList = new Set<string>();
   const renderedPage = { ...page };
 

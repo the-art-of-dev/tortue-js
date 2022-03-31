@@ -7,8 +7,9 @@ var fsSync = require('fs');
 var util = require('util');
 var jsdom = require('jsdom');
 var Mustache = require('mustache');
-var simpleGit = require('simple-git');
+var liveServer = require('live-server');
 var chalk = require('chalk');
+var simpleGit = require('simple-git');
 var chokidar = require('chokidar');
 
 function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
@@ -16,8 +17,9 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
 var fsSync__default = /*#__PURE__*/_interopDefaultLegacy(fsSync);
 var Mustache__default = /*#__PURE__*/_interopDefaultLegacy(Mustache);
-var simpleGit__default = /*#__PURE__*/_interopDefaultLegacy(simpleGit);
+var liveServer__default = /*#__PURE__*/_interopDefaultLegacy(liveServer);
 var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
+var simpleGit__default = /*#__PURE__*/_interopDefaultLegacy(simpleGit);
 var chokidar__default = /*#__PURE__*/_interopDefaultLegacy(chokidar);
 
 /*! *****************************************************************************
@@ -488,10 +490,20 @@ function renderElement(el, registry, depList, crr) {
     traverseElement(rendered, (el) => renderElement(el, registry, depList, crr));
     depList.add(comp.name);
 }
+function renderLayoutToHTML(page, layout) {
+    const pageDom = new jsdom.JSDOM(page.html);
+    if (!layout)
+        return pageDom.window.document.documentElement.outerHTML;
+    const html = Mustache__default["default"].render(layout.html, {
+        head: pageDom.window.document.head.innerHTML,
+        content: pageDom.window.document.body.innerHTML,
+    });
+    return html;
+}
 function renderPage(page, registry, layout) {
     var _a, _b;
     const crr = new ComponentRegisterRendererJSDOM(registry);
-    const dom = new jsdom.JSDOM(layout.html);
+    const dom = new jsdom.JSDOM(renderLayoutToHTML(page, layout));
     const dependecyList = new Set();
     const renderedPage = Object.assign({}, page);
     for (const child of dom.window.document.body.childNodes) {
@@ -613,10 +625,41 @@ const intellisenseVSC = {
     },
 };
 
+const log$2 = console.log;
+const logInfo$1 = (...text) => {
+    log$2(chalk__default["default"].white("[*]", ...text));
+};
+let isRunning = false;
+const liveServerShell = {
+    name: "live-server",
+    actions: {
+        renderFinished: (data) => __awaiter(void 0, void 0, void 0, function* () {
+            var _a, _b, _c, _d, _e;
+            if (isRunning)
+                return data;
+            const config = data.config.shellsConfig.find((s) => s.name == "export-html");
+            const args = config === null || config === void 0 ? void 0 : config.args;
+            const params = {
+                port: (_a = args === null || args === void 0 ? void 0 : args.port) !== null && _a !== void 0 ? _a : 8081,
+                host: (_b = args === null || args === void 0 ? void 0 : args.host) !== null && _b !== void 0 ? _b : "0.0.0.0",
+                root: (_c = args === null || args === void 0 ? void 0 : args.root) !== null && _c !== void 0 ? _c : "dist-html",
+                wait: (_d = args === null || args === void 0 ? void 0 : args.wait) !== null && _d !== void 0 ? _d : 500,
+                mount: (_e = args === null || args === void 0 ? void 0 : args.mount) !== null && _e !== void 0 ? _e : [["/assets", "./assets"]],
+                logLevel: 0,
+            };
+            liveServer__default["default"].start(params);
+            isRunning = true;
+            logInfo$1("Started development server....");
+            return data;
+        }),
+    },
+};
+
 const stdShells = [];
 stdShells.push(exportHTML);
 stdShells.push(exportAssets);
 stdShells.push(intellisenseVSC);
+stdShells.push(liveServerShell);
 
 function loadTortueShell(config) {
     var _a;
@@ -896,11 +939,13 @@ class NewCommand extends commander.Command {
      */
     constructor() {
         super("new");
-        this.argument("<name>", "New project name");
+        this.argument("[name]", "New project name", "");
         this.action(this._action);
     }
     _initGitRepo(repoPath) {
         return __awaiter(this, void 0, void 0, function* () {
+            if (fsSync__default["default"].existsSync(path__default["default"].resolve(repoPath, ".git")))
+                return;
             const git = simpleGit__default["default"](repoPath);
             yield git.init();
             yield git.checkout(["-b", "main"]);
@@ -1045,7 +1090,7 @@ dist-*
         return __awaiter(this, void 0, void 0, function* () {
             const newProjectPath = path__default["default"].resolve(".", name);
             const projectDirCreated = yield this._createProjectDir(newProjectPath);
-            if (!projectDirCreated) {
+            if (!projectDirCreated && name) {
                 logErr("Can't create new directory for your project :'(");
                 logErr("Try removing directory if already exist");
                 return;
@@ -1088,6 +1133,16 @@ class WatchCommand extends commander.Command {
                 tortue.config.pagesDir,
             ]);
             logInfo("Watching.....");
+            // logInfo("Starting development server....");
+            // const params: liveServer.LiveServerParams = {
+            //   port: 8081,
+            //   host: "0.0.0.0",
+            //   root: "dist-html",
+            //   wait: 500,
+            //   mount: [["/assets", "./assets"]],
+            //   logLevel: 0,
+            // };
+            // liveServer.start(params);
             let isReady = false;
             watcher.on("ready", () => {
                 if (isReady)
