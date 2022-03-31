@@ -442,8 +442,8 @@ class PageBuilder {
             const page = {
                 name: context.name,
                 html: isHtml ? (yield fs$2.readFile(htmlPath)).toString() : null,
-                css: isJs ? (yield fs$2.readFile(cssPath)).toString() : null,
-                js: isCss ? (yield fs$2.readFile(jsPath)).toString() : null,
+                css: isCss ? (yield fs$2.readFile(cssPath)).toString() : null,
+                js: isJs ? (yield fs$2.readFile(jsPath)).toString() : null,
             };
             return Promise.resolve(page);
         });

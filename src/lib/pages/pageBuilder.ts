@@ -40,8 +40,8 @@ export class PageBuilder {
     const page: Page = {
       name: context.name,
       html: isHtml ? (await fs.readFile(htmlPath)).toString() : null,
-      css: isJs ? (await fs.readFile(cssPath)).toString() : null,
-      js: isCss ? (await fs.readFile(jsPath)).toString() : null,
+      css: isCss ? (await fs.readFile(cssPath)).toString() : null,
+      js: isJs ? (await fs.readFile(jsPath)).toString() : null,
     };
 
     return Promise.resolve(page);
