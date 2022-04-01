@@ -146,7 +146,10 @@ If you are using VS Code, update your `.vscode/settings.json` with the following
 ```json
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features"
+  }
 }
 ```
 
