@@ -61,21 +61,27 @@ export class NewCommand extends Command {
       },
     );
 
-    const gitignore = (
-      await fs.readFile(
-        path.resolve(__dirname, "..", "default-project", ".gitignore"),
-      )
-    ).toString();
+    const gitignore = [
+      ".DS_Store",
+      "dist",
+      "dist-html",
+      ".vscode",
+      "node_modules",
+      "reports",
+      "dist-wp",
+    ].join("\n");
 
     await fs.writeFile(path.resolve(repoPath, ".gitignore"), gitignore);
 
-    const prettierrc = (
-      await fs.readFile(
-        path.resolve(__dirname, "..", "default-project", ".prettierrc.json"),
-      )
-    ).toString();
+    const prettierrc = {
+      trailingComma: "all",
+      tabWidth: 2,
+      semi: true,
+      singleQuote: false,
+      printWidth: 80,
+    };
 
-    await fs.writeFile(path.resolve(repoPath, ".prettierrc.json"), prettierrc);
+    await fs.writeJson(path.resolve(repoPath, ".prettierrc.json"), prettierrc);
 
     const packageJSON = await fs.readJSON(
       path.resolve(repoPath, "package.json"),
