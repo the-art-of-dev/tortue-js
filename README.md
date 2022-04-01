@@ -141,6 +141,15 @@ Install tortue locally:
 npm i -D tortue
 ```
 
+If you are using VS Code, update your `.vscode/settings.json` with the following options.
+
+```json
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true
+}
+```
+
 ---
 
 ---
