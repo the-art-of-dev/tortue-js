@@ -7,7 +7,7 @@ var fsSync = require('fs');
 var util = require('util');
 var jsdom = require('jsdom');
 var Mustache = require('mustache');
-var fs$6 = require('fs-extra');
+var fs$5 = require('fs-extra');
 var CleanCSS = require('clean-css');
 var terser = require('terser');
 var liveServer = require('live-server');
@@ -20,7 +20,7 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
 var fsSync__default = /*#__PURE__*/_interopDefaultLegacy(fsSync);
 var Mustache__default = /*#__PURE__*/_interopDefaultLegacy(Mustache);
-var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs$6);
+var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs$5);
 var CleanCSS__default = /*#__PURE__*/_interopDefaultLegacy(CleanCSS);
 var liveServer__default = /*#__PURE__*/_interopDefaultLegacy(liveServer);
 var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
@@ -125,7 +125,7 @@ class ContextTree {
     }
 }
 
-const fs$5 = {
+const fs$4 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -141,7 +141,7 @@ const mapDirToContext = (parent, d) => {
         path: path__default["default"].resolve(parent.path, d),
     };
 };
-const readContextDirs = (c) => __awaiter(void 0, void 0, void 0, function* () { return fs$5.readdir(path__default["default"].resolve(c.path)); });
+const readContextDirs = (c) => __awaiter(void 0, void 0, void 0, function* () { return fs$4.readdir(path__default["default"].resolve(c.path)); });
 //Default Builder implementation
 class ContextTreeBuilder {
     constructor(contextsRoot) {
@@ -210,7 +210,7 @@ class MapComponentRegistry {
     }
 }
 
-const fs$4 = {
+const fs$3 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -233,28 +233,28 @@ class ComponentBuilder {
         return __awaiter(this, void 0, void 0, function* () {
             const htmlPath = path__default["default"].resolve(componentDir, "index.html");
             const isHtml = fsSync__default["default"].existsSync(htmlPath);
-            return isHtml ? (yield fs$4.readFile(htmlPath)).toString() : null;
+            return isHtml ? (yield fs$3.readFile(htmlPath)).toString() : null;
         });
     }
     buildComponentCss(componentDir) {
         return __awaiter(this, void 0, void 0, function* () {
             const cssPath = path__default["default"].resolve(componentDir, "style.css");
             const isCss = fsSync__default["default"].existsSync(cssPath);
-            return isCss ? (yield fs$4.readFile(cssPath)).toString() : null;
+            return isCss ? (yield fs$3.readFile(cssPath)).toString() : null;
         });
     }
     buildComponentJs(componentDir) {
         return __awaiter(this, void 0, void 0, function* () {
             const jsPath = path__default["default"].resolve(componentDir, "script.js");
             const isJs = fsSync__default["default"].existsSync(jsPath);
-            return isJs ? (yield fs$4.readFile(jsPath)).toString() : null;
+            return isJs ? (yield fs$3.readFile(jsPath)).toString() : null;
         });
     }
     buildComponentDoc(componentDir) {
         return __awaiter(this, void 0, void 0, function* () {
             const docPath = path__default["default"].resolve(componentDir, "doc.md");
             const isDoc = fsSync__default["default"].existsSync(docPath);
-            return isDoc ? (yield fs$4.readFile(docPath)).toString() : null;
+            return isDoc ? (yield fs$3.readFile(docPath)).toString() : null;
         });
     }
     buildAllComponentParts(componentDir) {
@@ -359,7 +359,7 @@ class ComponentRegisterRendererJSDOM {
     }
 }
 
-const fs$3 = {
+const fs$2 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -391,7 +391,7 @@ class LayoutBuilder {
             if (fsSync__default["default"].existsSync(layoutPath)) {
                 return {
                     name: context.name,
-                    html: (yield fs$3.readFile(layoutPath)).toString(),
+                    html: (yield fs$2.readFile(layoutPath)).toString(),
                 };
             }
             return null;
@@ -411,7 +411,7 @@ class LayoutBuilder {
     }
 }
 
-const fs$2 = {
+const fs$1 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -441,9 +441,9 @@ class PageBuilder {
                 return null;
             const page = {
                 name: context.name,
-                html: isHtml ? (yield fs$2.readFile(htmlPath)).toString() : null,
-                css: isCss ? (yield fs$2.readFile(cssPath)).toString() : null,
-                js: isJs ? (yield fs$2.readFile(jsPath)).toString() : null,
+                html: isHtml ? (yield fs$1.readFile(htmlPath)).toString() : null,
+                css: isCss ? (yield fs$1.readFile(cssPath)).toString() : null,
+                js: isJs ? (yield fs$1.readFile(jsPath)).toString() : null,
             };
             return Promise.resolve(page);
         });
@@ -608,27 +608,63 @@ const exportAssets = {
     },
 };
 
-const fs$1 = {
-    readFile: util.promisify(fsSync__default["default"].readFile),
-    writeFile: util.promisify(fsSync__default["default"].writeFile),
-    mkdir: util.promisify(fsSync__default["default"].mkdir),
-    readdir: util.promisify(fsSync__default["default"].readdir),
-};
+let oldRegistry = null;
+const CUSTOM_DATA_ROOT = `.vscode${path__default["default"].sep}custom-data`;
+function getCustomDataName(comp) {
+    const customDataName = `${comp.name.toLowerCase()}-custom-data.json`;
+    return customDataName;
+}
+function getCustomDataPath(comp) {
+    return `${CUSTOM_DATA_ROOT}${path__default["default"].sep}${getCustomDataName(comp)}`;
+}
+function createComponentCustomData(comp) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const htmlCstomData = {
+            version: 1.1,
+            tags: [
+                {
+                    name: comp.name,
+                    description: comp.doc,
+                },
+            ],
+        };
+        yield fs__default["default"].writeJson(path__default["default"].resolve(getCustomDataPath(comp)), htmlCstomData);
+    });
+}
 const intellisenseVSC = {
     name: "intellisense-vsc",
     actions: {
         componentsBuilt: (data) => __awaiter(void 0, void 0, void 0, function* () {
-            const htmlCstomData = {
-                version: 1.1,
-                tags: [],
-            };
-            for (const comp of data.registry.getAllComponents()) {
-                htmlCstomData.tags.push({
-                    name: comp.name,
-                    description: comp.doc,
-                });
+            if (!fs__default["default"].existsSync(path__default["default"].resolve(CUSTOM_DATA_ROOT))) {
+                yield fs__default["default"].mkdirp(path__default["default"].resolve(CUSTOM_DATA_ROOT));
             }
-            yield fs$1.writeFile("components-html-custom-data.json", JSON.stringify(htmlCstomData));
+            const customDataPaths = [];
+            for (const comp of data.registry.getAllComponents()) {
+                let update = true;
+                if (oldRegistry) {
+                    const oldComp = oldRegistry.getComponent(comp.name);
+                    update = oldComp && oldComp.doc != comp.doc;
+                }
+                if (update) {
+                    yield createComponentCustomData(comp);
+                }
+                customDataPaths.push(getCustomDataPath(comp));
+            }
+            const vscSettingsNew = {
+                ["html.customData"]: customDataPaths,
+            };
+            const vscSettingsPath = path__default["default"].resolve(".vscode", "settings.json");
+            let vscSettings = {};
+            if (fs__default["default"].existsSync(vscSettingsPath)) {
+                vscSettings = yield fs__default["default"].readJson(vscSettingsPath);
+            }
+            if (!fs__default["default"].existsSync(path__default["default"].resolve(".vscode"))) {
+                yield fs__default["default"].mkdirp(path__default["default"].resolve(".vscode"));
+            }
+            yield fs__default["default"].writeJSON(vscSettingsPath, Object.assign(Object.assign({}, vscSettings), vscSettingsNew), {
+                spaces: 2,
+            });
+            oldRegistry = new MapComponentRegistry(data.registry.getAllComponents());
             return data;
         }),
     },

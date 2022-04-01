@@ -1,9 +1,0 @@
-{
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "[html]": {
-    "editor.suggest.insertMode": "replace",
-    "editor.defaultFormatter": "vscode.html-language-features"
-  },
-  "html.customData": ["components-html-custom-data.json"]
-}

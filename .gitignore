@@ -5,3 +5,4 @@ coverage
 components-html-custom-data.json
 dist-*
 assets
+.vscode

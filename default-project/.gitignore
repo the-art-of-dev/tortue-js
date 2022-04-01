@@ -5,3 +5,4 @@ node_modules
 reports
 dist-wp
 components-html-custom-data.json
+.vscode
