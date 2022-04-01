@@ -651,7 +651,7 @@ const intellisenseVSC = {
                 customDataPaths.push(getCustomDataPath(comp));
             }
             const vscSettingsNew = {
-                ["html.customData"]: customDataPaths,
+                ["html.customData"]: customDataPaths.sort(() => Math.random() - 0.5),
             };
             const vscSettingsPath = path__default["default"].resolve(".vscode", "settings.json");
             let vscSettings = {};

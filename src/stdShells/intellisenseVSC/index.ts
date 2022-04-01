@@ -59,7 +59,7 @@ const intellisenseVSC: TortueShell = {
       }
 
       const vscSettingsNew = {
-        ["html.customData"]: customDataPaths,
+        ["html.customData"]: customDataPaths.sort(() => Math.random() - 0.5),
       };
 
       const vscSettingsPath = path.resolve(".vscode", "settings.json");
