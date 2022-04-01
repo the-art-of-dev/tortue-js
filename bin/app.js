@@ -1124,6 +1124,10 @@ class NewCommand extends commander.Command {
                 errorOnExist: true,
                 overwrite: overwrite,
             });
+            const gitignore = (yield fs__default["default"].readFile(path__default["default"].resolve(__dirname, "..", "default-project", ".gitignore"))).toString();
+            yield fs__default["default"].writeFile(path__default["default"].resolve(repoPath, ".gitignore"), gitignore);
+            const prettierrc = (yield fs__default["default"].readFile(path__default["default"].resolve(__dirname, "..", "default-project", ".prettierrc.json"))).toString();
+            yield fs__default["default"].writeFile(path__default["default"].resolve(repoPath, ".prettierrc.json"), prettierrc);
             const packageJSON = yield fs__default["default"].readJSON(path__default["default"].resolve(repoPath, "package.json"));
             packageJSON.name = projectName;
             const tortuePackageJSON = yield fs__default["default"].readJson(path__default["default"].resolve(__dirname, "..", "package.json"));

@@ -1,5 +1,4 @@
 .eslintrc.json
-.gitignore
 tasks
 jest.config.js
 rollup.config.*
@@ -7,7 +6,6 @@ tsconfig.json
 node_modules
 tests
 testData
-.prettierrc.json
 components-html-custom-data.json
 dist-*
 coverage

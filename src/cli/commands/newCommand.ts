@@ -61,6 +61,22 @@ export class NewCommand extends Command {
       },
     );
 
+    const gitignore = (
+      await fs.readFile(
+        path.resolve(__dirname, "..", "default-project", ".gitignore"),
+      )
+    ).toString();
+
+    await fs.writeFile(path.resolve(repoPath, ".gitignore"), gitignore);
+
+    const prettierrc = (
+      await fs.readFile(
+        path.resolve(__dirname, "..", "default-project", ".prettierrc.json"),
+      )
+    ).toString();
+
+    await fs.writeFile(path.resolve(repoPath, ".prettierrc.json"), prettierrc);
+
     const packageJSON = await fs.readJSON(
       path.resolve(repoPath, "package.json"),
     );
