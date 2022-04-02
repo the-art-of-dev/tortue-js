@@ -5,7 +5,7 @@
 ![npm type definitions](https://img.shields.io/npm/types/tortue)
 [![swtf](https://img.shields.io/badge/support-SWTF-brightgreen)](https://github.com/the-art-of-dev/swtf)
 
-<img src="logo.jpg" width="600px">
+<img src="logo.svg">
 
 _Website development made easy_
 
