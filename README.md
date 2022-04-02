@@ -799,5 +799,5 @@ interface TortueShell {
 
 ## Sponsors
 
-![](./lsf-dark.svg#gh-dark-mode-only)
-![](./lsf-light.svg#gh-light-mode-only)
+![](./lsf-dark.svg#gh-light-mode-only)
+![](./lsf-light.svg#gh-dark-mode-only)
