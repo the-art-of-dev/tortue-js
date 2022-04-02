@@ -799,4 +799,4 @@ interface TortueShell {
 
 ## Sponsors
 
-[<img src="https://localsalesforce.io/assets/images/logo.svg" width="200px" style="background-color:black">](https://localsalesforce.io)
+[<img src="https://localsalesforce.io/assets/images/logo.svg#gh-dark-mode-only" width="200px" style="background-color:black">](https://localsalesforce.io)
