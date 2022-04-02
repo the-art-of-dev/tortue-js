@@ -799,4 +799,5 @@ interface TortueShell {
 
 ## Sponsors
 
-![](https://localsalesforce.io/assets/images/logo.svg#gh-dark-mode-only)
+![](./lsf-dark.svg#gh-dark-mode-only)
+![](./lsf-light.svg#gh-light-mode-only)
