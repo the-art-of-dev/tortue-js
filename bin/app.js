@@ -839,16 +839,13 @@ function loadTortueShell(config) {
             name: config.name,
             actions: {},
         };
-        console.log(shell.name);
-        //   if (config.path) config.path = path.resolve(config.path);
-        console.log(config.path);
+        if (config.path)
+            config.path = path__default["default"].resolve(config.path);
         try {
             const actions = require((_a = config.path) !== null && _a !== void 0 ? _a : config.name);
-            console.log(actions);
             shell.actions = actions;
         }
         catch (error) {
-            console.log(error);
             return null;
         }
         if (config.events) {
