@@ -109,9 +109,9 @@ Create a new component `Home-Hero-Section`:
 tortue create comp Home-Hero-Section
 ```
 
-By default new component comes only with the `index.html` file. If you want to include style, script or documentation use flags `-s`, `-j` or `-d` respectively.
+By default, a new component comes only with the `index.html` file. If you want to include style, script or documentation use flags `-s`, `-j` or `-d` respectively.
 
-This command creates the `Home-Hero-Section` component with the `style.css` and `script.js` files as well
+This command creates the `Home-Hero-Section` component with the `style.css` and `script.js` files as well:
 
 ```
 tortue create comp Home-Hero-Section -s -d
@@ -123,7 +123,7 @@ Create a new page `AboutUs`:
 tortue create page AboutUs
 ```
 
-For more info on create command run
+For more info on create command run:
 
 ```
 tortue create -h
