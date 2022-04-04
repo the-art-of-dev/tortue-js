@@ -5,12 +5,7 @@ import { buildTortueShells, TortueShell } from "@lib/tortueShells";
 import { DEFAULT_TORTUE_CONFIG, TortueConfig } from "./tortueConfig";
 import fsSync from "fs";
 import { promisify } from "util";
-const fs = {
-  readFile: promisify(fsSync.readFile),
-  writeFile: promisify(fsSync.writeFile),
-  mkdir: promisify(fsSync.mkdir),
-  readdir: promisify(fsSync.readdir),
-};
+import fs from "fs-extra";
 
 import path from "path";
 import { findPageLayout } from "@lib/layouts/layout";
@@ -35,11 +30,8 @@ export class Tortue {
 
   private async _readConfig(configPath: string): Promise<TortueConfig> {
     configPath = path.resolve(configPath);
-    if (!fsSync.existsSync(configPath)) return null;
-    const config = JSON.parse(
-      (await fs.readFile(configPath)).toString(),
-    ) as unknown as TortueConfig;
-
+    if (!fs.existsSync(configPath)) return null;
+    const config = (await fs.readJSON(configPath)) as TortueConfig;
     return config;
   }
 

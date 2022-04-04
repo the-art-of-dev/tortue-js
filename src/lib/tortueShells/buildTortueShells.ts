@@ -1,5 +1,5 @@
 import { TortuePipelineEvent, TortueShellConfig } from "@lib/tortue";
-import { config } from "process";
+import fs from "fs-extra";
 import {
   TortueShell,
   TortueShellAction,
@@ -7,6 +7,7 @@ import {
 } from "./tortueShell";
 
 import { stdShells } from "@stdShells/stdShells";
+import path from "path";
 
 async function loadTortueShell(
   config: TortueShellConfig,
@@ -18,6 +19,8 @@ async function loadTortueShell(
     name: config.name,
     actions: {},
   };
+
+  if (config.path) config.path = path.resolve(config.path);
 
   try {
     const actions: {

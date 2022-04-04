@@ -7,7 +7,7 @@ var fsSync = require('fs');
 var util = require('util');
 var jsdom = require('jsdom');
 var Mustache = require('mustache');
-var fs$5 = require('fs-extra');
+var fs$4 = require('fs-extra');
 var CleanCSS = require('clean-css');
 var terser = require('terser');
 var liveServer = require('live-server');
@@ -20,7 +20,7 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var path__default = /*#__PURE__*/_interopDefaultLegacy(path);
 var fsSync__default = /*#__PURE__*/_interopDefaultLegacy(fsSync);
 var Mustache__default = /*#__PURE__*/_interopDefaultLegacy(Mustache);
-var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs$5);
+var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs$4);
 var CleanCSS__default = /*#__PURE__*/_interopDefaultLegacy(CleanCSS);
 var liveServer__default = /*#__PURE__*/_interopDefaultLegacy(liveServer);
 var chalk__default = /*#__PURE__*/_interopDefaultLegacy(chalk);
@@ -125,7 +125,7 @@ class ContextTree {
     }
 }
 
-const fs$4 = {
+const fs$3 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -141,7 +141,7 @@ const mapDirToContext = (parent, d) => {
         path: path__default["default"].resolve(parent.path, d),
     };
 };
-const readContextDirs = (c) => __awaiter(void 0, void 0, void 0, function* () { return fs$4.readdir(path__default["default"].resolve(c.path)); });
+const readContextDirs = (c) => __awaiter(void 0, void 0, void 0, function* () { return fs$3.readdir(path__default["default"].resolve(c.path)); });
 //Default Builder implementation
 class ContextTreeBuilder {
     constructor(contextsRoot) {
@@ -210,7 +210,7 @@ class MapComponentRegistry {
     }
 }
 
-const fs$3 = {
+const fs$2 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -233,28 +233,28 @@ class ComponentBuilder {
         return __awaiter(this, void 0, void 0, function* () {
             const htmlPath = path__default["default"].resolve(componentDir, "index.html");
             const isHtml = fsSync__default["default"].existsSync(htmlPath);
-            return isHtml ? (yield fs$3.readFile(htmlPath)).toString() : null;
+            return isHtml ? (yield fs$2.readFile(htmlPath)).toString() : null;
         });
     }
     buildComponentCss(componentDir) {
         return __awaiter(this, void 0, void 0, function* () {
             const cssPath = path__default["default"].resolve(componentDir, "style.css");
             const isCss = fsSync__default["default"].existsSync(cssPath);
-            return isCss ? (yield fs$3.readFile(cssPath)).toString() : null;
+            return isCss ? (yield fs$2.readFile(cssPath)).toString() : null;
         });
     }
     buildComponentJs(componentDir) {
         return __awaiter(this, void 0, void 0, function* () {
             const jsPath = path__default["default"].resolve(componentDir, "script.js");
             const isJs = fsSync__default["default"].existsSync(jsPath);
-            return isJs ? (yield fs$3.readFile(jsPath)).toString() : null;
+            return isJs ? (yield fs$2.readFile(jsPath)).toString() : null;
         });
     }
     buildComponentDoc(componentDir) {
         return __awaiter(this, void 0, void 0, function* () {
             const docPath = path__default["default"].resolve(componentDir, "doc.md");
             const isDoc = fsSync__default["default"].existsSync(docPath);
-            return isDoc ? (yield fs$3.readFile(docPath)).toString() : null;
+            return isDoc ? (yield fs$2.readFile(docPath)).toString() : null;
         });
     }
     buildAllComponentParts(componentDir) {
@@ -359,7 +359,7 @@ class ComponentRegisterRendererJSDOM {
     }
 }
 
-const fs$2 = {
+const fs$1 = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -391,7 +391,7 @@ class LayoutBuilder {
             if (fsSync__default["default"].existsSync(layoutPath)) {
                 return {
                     name: context.name,
-                    html: (yield fs$2.readFile(layoutPath)).toString(),
+                    html: (yield fs$1.readFile(layoutPath)).toString(),
                 };
             }
             return null;
@@ -411,7 +411,7 @@ class LayoutBuilder {
     }
 }
 
-const fs$1 = {
+const fs = {
     readFile: util.promisify(fsSync__default["default"].readFile),
     writeFile: util.promisify(fsSync__default["default"].writeFile),
     mkdir: util.promisify(fsSync__default["default"].mkdir),
@@ -441,9 +441,9 @@ class PageBuilder {
                 return null;
             const page = {
                 name: context.name,
-                html: isHtml ? (yield fs$1.readFile(htmlPath)).toString() : null,
-                css: isCss ? (yield fs$1.readFile(cssPath)).toString() : null,
-                js: isJs ? (yield fs$1.readFile(jsPath)).toString() : null,
+                html: isHtml ? (yield fs.readFile(htmlPath)).toString() : null,
+                css: isCss ? (yield fs.readFile(cssPath)).toString() : null,
+                js: isJs ? (yield fs.readFile(jsPath)).toString() : null,
             };
             return Promise.resolve(page);
         });
@@ -839,11 +839,16 @@ function loadTortueShell(config) {
             name: config.name,
             actions: {},
         };
+        console.log(shell.name);
+        //   if (config.path) config.path = path.resolve(config.path);
+        console.log(config.path);
         try {
             const actions = require((_a = config.path) !== null && _a !== void 0 ? _a : config.name);
+            console.log(actions);
             shell.actions = actions;
         }
         catch (error) {
+            console.log(error);
             return null;
         }
         if (config.events) {
@@ -881,12 +886,6 @@ function findPageLayout(pageName, layouts) {
     return null;
 }
 
-const fs = {
-    readFile: util.promisify(fsSync__default["default"].readFile),
-    writeFile: util.promisify(fsSync__default["default"].writeFile),
-    mkdir: util.promisify(fsSync__default["default"].mkdir),
-    readdir: util.promisify(fsSync__default["default"].readdir),
-};
 class Tortue {
     /**
      *
@@ -899,9 +898,9 @@ class Tortue {
     _readConfig(configPath) {
         return __awaiter(this, void 0, void 0, function* () {
             configPath = path__default["default"].resolve(configPath);
-            if (!fsSync__default["default"].existsSync(configPath))
+            if (!fs__default["default"].existsSync(configPath))
                 return null;
-            const config = JSON.parse((yield fs.readFile(configPath)).toString());
+            const config = (yield fs__default["default"].readJSON(configPath));
             return config;
         });
     }
