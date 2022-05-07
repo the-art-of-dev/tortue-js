@@ -24,4 +24,45 @@ For every Shell included in configuration fire an event that shell finished it's
 
 ## Up for debate
 
+```
+Tortue component
+- Import
+- Export
+- Render
+
+Tortue page
+- Import
+- Export
+- Render
+
+Tortue layout
+- Import
+- Export
+- Render
+
+Tortue shell
+- Load
+- Export
+
+Tortue pipeline
+- LoadConfig
+- LoadShells
+- Run
+
+Tortue Render pipeline
+- …
+- Import components
+- Import layouts
+- Import pages
+- Render pages
+- Export pages to html
+
+Tortue Add pipeline
+- Import from source(JSON, directory, registry)
+- Export components to local components dir
+- Export layouts to local layouts dir
+- Export shells to local shells dir
+- Update dependency list
+```
+
 ## FAQ
