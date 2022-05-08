@@ -3,9 +3,9 @@ import { TortueShellActionData } from "@lib/tortueShells/tortueShell";
 import { TortuePipelineEvent } from "./events";
 import { Tortue } from "./tortue";
 
-export class TortuePipeline {
-  private _shells: TortueShell[];
-  private _tortue: Tortue;
+export class RenderPipeline {
+  protected _shells: TortueShell[];
+  protected _tortue: Tortue;
 
   /**
    *

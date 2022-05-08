@@ -1,6 +1,6 @@
 import { Command } from "commander";
 import chokidar from "chokidar";
-import { Tortue, TortuePipeline } from "@lib/tortue";
+import { Tortue, RenderPipeline } from "@lib/tortue";
 import { stdShells } from "@stdShells/stdShells";
 import chalk from "chalk";
 
@@ -20,7 +20,7 @@ export interface WatchCommandOptions {
 
 export class WatchCommand extends Command {
   /**
-   * Watch command runs TortuePipeline build process on
+   * Watch command runs RenderPipeline build process on
    * every monitored data change.
    */
   constructor() {
@@ -36,7 +36,7 @@ export class WatchCommand extends Command {
   private async _action(options: WatchCommandOptions) {
     const tortue = new Tortue(options.config);
     const defaultShells = stdShells;
-    const pipeline = new TortuePipeline(tortue, defaultShells);
+    const pipeline = new RenderPipeline(tortue, defaultShells);
     await pipeline.execute();
     logSuccess("Export pipeline finished!");
 

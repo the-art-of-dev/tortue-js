@@ -1,5 +1,5 @@
 import { Tortue } from "@lib/tortue";
-import { TortuePipeline } from "@lib/tortue/tortuePipeline";
+import { RenderPipeline } from "@lib/tortue/tortuePipeline";
 import { Command } from "commander";
 import exportHTMLShell from "@stdShells/exportHTML";
 import exportAssets from "@stdShells/exportAssets";
@@ -26,7 +26,7 @@ export class ExportCommand extends Command {
   private async _action(options: ExportCommandOptions): Promise<void> {
     const tortue = new Tortue(options.config);
     const defaultShells = stdShells;
-    const pipeline = new TortuePipeline(tortue, defaultShells);
+    const pipeline = new RenderPipeline(tortue, defaultShells);
     await pipeline.execute();
   }
 }
